@@ -20,7 +20,6 @@ const Balloon = () => {
                     "<div> Текст всплывающей подсказки, содержащий ссылки: </div><br><a href='https://www.google.ru'>Google</a><br><a href='https://yandex.ru'>Яндекс</a>"
                 }
             />
-
         </>
     );
 }
