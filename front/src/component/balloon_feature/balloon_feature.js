@@ -18,25 +18,27 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     },
 }));
 
-const Balloon3 = () => {
-
+// source: https://mui.com/material-ui/react-tooltip/
+const Balloon = (props) => {
     return (
         <>
             <HtmlTooltip
                 title={
                     <React.Fragment>
-                        <Typography color="inherit">Tooltip with HTML</Typography>
-                        <em>{"And here's"}</em> <b>{'some'}</b> <u>{'amazing content'}</u>.{' '}
-                        {"It's very engaging. Right?"}
+                        <Typography color="red">Tooltip with HTML</Typography>
+                        <em>{ props.title_pl1 }</em><br />
+                        <b>Имя: { props.name_pl1 }</b><br />
+                        <u>Гандикап { props.handicap_pl1 }</u><br />
+                        {"Участник клуба: "}{ props.club_mem_pl1 }
                     </React.Fragment>
                 }
             >
                 <button id="app-title">
-                    Bottom 3
+                    Bottom
                 </button>
             </HtmlTooltip>
         </>
     );
 }
 
-export default Balloon3;
+export default Balloon;
