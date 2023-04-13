@@ -1,16 +1,14 @@
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
-import Balloon from './component/balloon_feature/balloon_feature'
-import Balloon2 from './component/balloon_feature/balloon_feature_2'
-// import Balloon4 from './component/balloon_feature/balloon_feature_4'
+import Balloon3 from './component/balloon_feature/balloon_feature'
 
 // Balloon и  Balloon2 недописано
 function App() {
   return (
     <div className="App">
-        <Balloon />
-        <Balloon2 />
-        {/*<Balloon4 />*/}
+        <div style={{ position: "absolute", left: 40, top: 120 }}>
+            <Balloon3 />
+        </div>
     </div>
   );
 }

@@ -1,27 +1,42 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 
 import "react-tooltip/dist/react-tooltip.css";
-import { Tooltip as ReactTooltip } from "react-tooltip";
 
-const Balloon = () => {
+import { styled } from '@mui/material/styles';
+import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+
+const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+        backgroundColor: '#f5f5f9',
+        color: 'rgba(0, 0, 0, 0.87)',
+        maxWidth: 220,
+        fontSize: theme.typography.pxToRem(12),
+        border: '1px solid #dadde9',
+    },
+}));
+
+const Balloon3 = () => {
 
     return (
         <>
-            <div style={{ position: "absolute", left: 40, top: 40 }}>
-                <button id="app-title">
-                    Bottom
-                </button>
-            </div>
-
-            <ReactTooltip
-                anchorId="app-title"
-                place="bottom"
-                html={
-                    "<div> Текст всплывающей подсказки, содержащий ссылки: </div><br><a href='https://www.google.ru'>Google</a><br><a href='https://yandex.ru'>Яндекс</a>"
+            <HtmlTooltip
+                title={
+                    <React.Fragment>
+                        <Typography color="inherit">Tooltip with HTML</Typography>
+                        <em>{"And here's"}</em> <b>{'some'}</b> <u>{'amazing content'}</u>.{' '}
+                        {"It's very engaging. Right?"}
+                    </React.Fragment>
                 }
-            />
+            >
+                <button id="app-title">
+                    Bottom 3
+                </button>
+            </HtmlTooltip>
         </>
     );
 }
 
-export default Balloon;
+export default Balloon3;
