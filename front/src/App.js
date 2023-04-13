@@ -1,23 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
+import Balloon from './component/balloon_feature/balloon_feature'
+import Balloon2 from './component/balloon_feature/balloon_feature_2'
+// import Balloon4 from './component/balloon_feature/balloon_feature_4'
 
+// Balloon и  Balloon2 недописано
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <Balloon />
+        <Balloon2 />
+        {/*<Balloon4 />*/}
     </div>
   );
 }
