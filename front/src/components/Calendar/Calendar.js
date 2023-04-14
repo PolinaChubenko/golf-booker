@@ -44,11 +44,27 @@ export const CalendarStyleWrapper = styled.div`
     border-color: #88B04B !important;
   }
   .fc-media-screen {
-    height: 1500px;
+    height: 2020px;
   }
   .fc-day-grid-container.fc-scroller {
     height: 100% !important;
     overflow-y: auto;
+  }
+  .fc-scrollgrid-section-header {
+    background-color: #E4EDD6 !important;
+  }
+  td {
+    height: 35px !important;
+  }
+  .fc-timegrid-event {
+    border-radius: 10px;
+  }
+  .fc-event-title {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `
 
@@ -117,7 +133,8 @@ const Calendar = (props) => {
                         }}
 
                         events={handleEvent}
-                        eventColor={'#378006'}
+                        eventColor={'#ABABAB'}
+                        eventTextColor={'#494C62'}
                         displayEventTime={false}
                         eventClick={clickEvent}
                         dateClick={props.is_admin ? addEvent : null}
