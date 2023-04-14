@@ -1,0 +1,47 @@
+
+.auth_wrapper {
+    margin: 200px 20% 20% 20%;
+}
+
+.form_title_wrapper {
+    text-align: center;
+    color: rgba(27, 31, 59, 0.8);
+    margin: 5% auto 3% auto;
+}
+
+.form_title {
+    font-family: 'Manrope', serif;
+    font-style: normal;
+    font-weight: 800;
+    font-size: 25px;
+    line-height: 26px;
+
+    align-items: center;
+}
+
+fieldset {
+    border-radius: 20px;
+}
+
+.btn_wrapper {
+    margin-top: 5%;
+    margin-bottom: 2%;
+}
+
+.signin_btn {
+    background-color: #A7C57A;
+    border-radius: 5px;
+    width: 90px;
+    height: 27px;
+    font-family: 'Manrope-Bold', serif;
+    font-size: 16px;
+    text-align: center;
+    margin: auto;
+    border-color: #88B04B;
+}
+
+.error {
+    color: red;
+    font-family: 'Manrope', serif;
+    font-size: 12px;
+}
