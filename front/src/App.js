@@ -1,14 +1,11 @@
-//import logo from './logo.svg';
 import './App.css';
 import Balloon from './component/Balloon/Balloon'
+import Calendar from "./components/Calendar/Calendar";
 
-// Balloon и  Balloon2 недописано
 function App() {
   return (
     <div className="App">
-        <div>
-            <Balloon/>
-        </div>
+      <Calendar/>
     </div>
   );
 }
