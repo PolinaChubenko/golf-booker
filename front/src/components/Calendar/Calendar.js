@@ -7,12 +7,11 @@ import {useState} from "react";
 import data from '../../test_bd.json';
 import moment from "moment";
 
-const Calendar = () => {
+const Calendar = (props) => {
     const [events, setEvents] = useState([])
 
     useEffect(() => {
         setEvents(data)
-        console.log(data)
     }, [])
 
     const handleEvent = (info, successCallback, failureCallback) => {
@@ -35,46 +34,50 @@ const Calendar = () => {
     }
 
     return (
-        <FullCalendar
-            // dayHeaderClassNames={style.calendar}
-            viewClassNames={style.calendar}
-            weekNumberClassNames={style.calendar}
-            plugins={[timeGridPlugin, interactionPlugin]}
-            locale="ru"
-            timeZone="Europe/Moscow"
-            initialView="timeGridWeek"
-            nowIndicator={true}
-            headerToolbar={{
-                left: 'prev,next today',
-                center: 'title',
-                right: 'timeGridWeek,timeGridDay'
-            }}
-            navLinks={true} // can click day/week names to navigate views
-            editable={false} // запрет двигать и менять размер события
-            selectable={false}
-            selectMirror={true}
-            dayMaxEvents={true} // allow "more" link when too many events
-            allDaySlot={false} // отключение поля all-day
-            eventDurationEditable={false} // запрет менять размер события
-            firstDay={1} // начало недели - понедельник
+        <div>
+            <div className={style.calendar}>
+                <div className={style.title}>Бронирование Tee-time</div>
+                <FullCalendar
+                    plugins={[timeGridPlugin, interactionPlugin]}
+                    locale="ru"
+                    timeZone="Europe/Moscow"
+                    initialView="timeGridWeek"
+                    nowIndicator={true}
+                    headerToolbar={{
+                        left: 'today prev,next',
+                        center: 'title',
+                        right: 'timeGridWeek,timeGridDay'
+                    }}
+                    navLinks={true} // can click day/week names to navigate views
+                    editable={false} // запрет двигать и менять размер события
+                    selectable={false}
+                    selectMirror={true}
+                    dayMaxEvents={true} // allow "more" link when too many events
+                    allDaySlot={false} // отключение поля all-day
+                    eventDurationEditable={false} // запрет менять размер события
+                    firstDay={1} // начало недели - понедельник
 
-            slotDuration='00:10:00'
-            slotLabelInterval={10}
-            slotMinTime='08:00:00'
-            slotMaxTime='18:00:00'
+                    slotDuration='00:10:00'
+                    slotLabelInterval={10}
+                    slotMinTime='09:00:00'
+                    slotMaxTime='18:10:00'
 
-            buttonText={{
-                today: 'Сегодня',
-                month: 'Месяц',
-                week: 'Неделя',
-                day: 'День',
-                list: 'Список'
-            }}
+                    buttonText={{
+                        today: 'Сегодня',
+                        month: 'Месяц',
+                        week: 'Неделя',
+                        day: 'День',
+                        list: 'Список'
+                    }}
 
-            events={handleEvent}
-            eventClick={clickEvent}
-            dateClick={addEvent}
-        />
+                    events={handleEvent}
+                    eventColor={'#378006'}
+                    displayEventTime={false}
+                    eventClick={clickEvent}
+                    dateClick={props.is_admin ? addEvent : null}
+                />
+            </div>
+        </div>
     )
 }
 
