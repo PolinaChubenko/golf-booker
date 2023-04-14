@@ -4,12 +4,14 @@ import Calendar from "../Calendar/Calendar";
 
 
 const User = () => {
-    return <div>
-        <Header />
-        <div className={style.calendar_wrapper}>
-            <Calendar is_admin={false}/>
+    return (
+        <div>
+            <Header/>
+            <div className={style.calendar_wrapper}>
+                <Calendar is_admin={false}/>
+            </div>
         </div>
-    </div>
+    )
 }
 
 export default User;

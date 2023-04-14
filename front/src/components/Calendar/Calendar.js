@@ -6,81 +6,45 @@ import {useState} from "react";
 import data from '../../test_bd.json';
 import style from "./Calendar.module.css";
 import moment from "moment";
-import styled from "@emotion/styled";
+import Modal from "../Modal/Modal.js";
+import {CalendarStyleWrapper} from "./StylingCalendar";
+import Balloon from "../Balloon/Balloon";
+import { createRoot } from 'react-dom/client';
 
-export const CalendarStyleWrapper = styled.div`
-  .fc-today-button {
-    background: #A7C57A;
-    border-radius: 11px;
-    color: #343A50;
-    border-color: #88B04B3B;
-  }
-
-  .fc-today-button:hover, .fc-button-primary:not(:disabled):active {
-    background: #88B04B;
-    border-color: #88B04B;
-  }
-
-  .fc .fc-button-primary:disabled {
-    background: #D4D0D0;
-    border-color: #D4D0D0;
-  }
-  .fc-next-button, .fc-prev-button, .fc-next-button:hover, .fc-prev-button:hover,
-  .fc-next-button:active, .fc-prev-button:active, .fc-next-button:focus, .fc-prev-button:focus {
-    background-color: transparent !important;
-    border-color: transparent !important;
-    box-shadow: none !important;
-  }
-  .fc-icon-chevron-right, .fc-icon-chevron-left {
-    color: #494C62;
-  }
-  .fc-timeGridWeek-button, .fc-timeGridDay-button {
-    background: #A7C57A !important;
-    border-color: #88B04B !important;
-    border-radius: 18px;
-  }
-  .fc-timeGridWeek-button[aria-pressed=true], .fc-timeGridDay-button[aria-pressed=true] {
-    background: #88B04B !important;
-    border-color: #88B04B !important;
-  }
-  .fc-media-screen {
-    height: 2020px;
-  }
-  .fc-day-grid-container.fc-scroller {
-    height: 100% !important;
-    overflow-y: auto;
-  }
-  .fc-scrollgrid-section-header {
-    background-color: #E4EDD6 !important;
-  }
-  td {
-    height: 35px !important;
-  }
-  .fc-timegrid-event {
-    border-radius: 10px;
-  }
-  .fc-event-title {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-`
 
 const Calendar = (props) => {
+    const [isModal, setIsModal] = useState(false)
     const [events, setEvents] = useState([])
 
     useEffect(() => {
         setEvents(data)
     }, [])
 
+    const showModal = () => {
+        setIsModal(true)
+    };
+    const hideModal = () => {
+        setIsModal(false);
+    };
+
     const handleEvent = (info, successCallback, failureCallback) => {
         successCallback(events)
     }
 
+    const eventDidMount = (info) => {
+        // console.log(info.el)
+        // let questionMark = document.createElement('strong');
+        // const root = createRoot(info.el.querySelector('.fc-event-main'));
+        // const eventComponent = <Balloon eventElement={questionMark} />;
+        // info.el.innerHTML = '';
+        // const root = createRoot(info.el)
+        // console.log(root)
+        // root.render(questionMark);
+        // console.log(eventComponent)
+    };
+
     const clickEvent = (info) => {
-        console.log("HEEEY")
+        console.log("here will be balloon")
     }
 
     const addEvent = (info) => {
@@ -92,10 +56,13 @@ const Calendar = (props) => {
             end: end.format("YYYY-MM-DD HH:mm")
         }
         setEvents(oldArray => [...oldArray, new_event]);
+        showModal()
     }
 
     return (
         <div>
+            <Modal show={isModal} handleClose={hideModal}>
+            </Modal>
             <div className={style.calendar}>
                 <div className={style.title}>Бронирование Tee-time</div>
                 <CalendarStyleWrapper>
@@ -121,6 +88,12 @@ const Calendar = (props) => {
 
                         slotDuration='00:10:00'
                         slotLabelInterval={10}
+                        slotLabelFormat={{
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            omitZeroMinute: false,
+                            meridiem: 'short',
+                        }}
                         slotMinTime='09:00:00'
                         slotMaxTime='18:10:00'
 
@@ -137,6 +110,7 @@ const Calendar = (props) => {
                         eventTextColor={'#494C62'}
                         displayEventTime={false}
                         eventClick={clickEvent}
+                        eventDidMount={eventDidMount}
                         dateClick={props.is_admin ? addEvent : null}
                     />
                 </CalendarStyleWrapper>
