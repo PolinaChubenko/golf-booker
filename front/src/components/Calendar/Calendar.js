@@ -121,6 +121,12 @@ const Calendar = (props) => {
 
                         slotDuration='00:10:00'
                         slotLabelInterval={10}
+                        slotLabelFormat={{
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            omitZeroMinute: false,
+                            meridiem: 'short',
+                        }}
                         slotMinTime='09:00:00'
                         slotMaxTime='18:10:00'
 
