@@ -16,11 +16,11 @@ const HtmlTooltip = styled(({className, ...props}: TooltipProps) => (
 }));
 
 // source: https://mui.com/material-ui/react-tooltip/
-const Balloon = (props) => {
+const Balloon = ({eventElement}) => {
     const balloon_inner = <p>Это баллун</p>
     return (
         <HtmlTooltip title={balloon_inner}>
-            <button>Наведи на меня</button>
+            {eventElement.title}
         </HtmlTooltip>
     );
 }

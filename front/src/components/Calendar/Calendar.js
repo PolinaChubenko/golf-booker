@@ -8,10 +8,17 @@ import style from "./Calendar.module.css";
 import moment from "moment";
 import Modal from "../Modal/Modal.js";
 import {CalendarStyleWrapper} from "./StylingCalendar";
+import Balloon from "../Balloon/Balloon";
+import { createRoot } from 'react-dom/client';
 
 
 const Calendar = (props) => {
     const [isModal, setIsModal] = useState(false)
+    const [events, setEvents] = useState([])
+
+    useEffect(() => {
+        setEvents(data)
+    }, [])
 
     const showModal = () => {
         setIsModal(true)
@@ -20,15 +27,21 @@ const Calendar = (props) => {
         setIsModal(false);
     };
 
-    const [events, setEvents] = useState([])
-
-    useEffect(() => {
-        setEvents(data)
-    }, [])
-
     const handleEvent = (info, successCallback, failureCallback) => {
         successCallback(events)
     }
+
+    const eventDidMount = (info) => {
+        // console.log(info.el)
+        // let questionMark = document.createElement('strong');
+        // const root = createRoot(info.el.querySelector('.fc-event-main'));
+        // const eventComponent = <Balloon eventElement={questionMark} />;
+        // info.el.innerHTML = '';
+        // const root = createRoot(info.el)
+        // console.log(root)
+        // root.render(questionMark);
+        // console.log(eventComponent)
+    };
 
     const clickEvent = (info) => {
         console.log("here will be balloon")
@@ -49,7 +62,6 @@ const Calendar = (props) => {
     return (
         <div>
             <Modal show={isModal} handleClose={hideModal}>
-                <p>Modal</p>
             </Modal>
             <div className={style.calendar}>
                 <div className={style.title}>Бронирование Tee-time</div>
@@ -98,6 +110,7 @@ const Calendar = (props) => {
                         eventTextColor={'#494C62'}
                         displayEventTime={false}
                         eventClick={clickEvent}
+                        eventDidMount={eventDidMount}
                         dateClick={props.is_admin ? addEvent : null}
                     />
                 </CalendarStyleWrapper>
