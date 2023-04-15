@@ -28,3 +28,33 @@
     z-index: 1;
     display: none;
 }
+
+/*--inner-stuff--*/
+
+.tee_time_wrapper {
+    margin: 3% auto;
+}
+
+.tee_time_wrapper p {
+    /*font-family: 'Inter', serif;*/
+    font-style: normal;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 150%;
+    margin: auto;
+    text-transform: none;
+}
+
+.players_wrapper {
+    width: 150px;
+}
+
+.players_wrapper p {
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 150%;
+    margin: auto;
+    text-transform: none;
+}
