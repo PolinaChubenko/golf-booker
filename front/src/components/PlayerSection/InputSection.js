@@ -1,7 +1,6 @@
 import style from "./PlayerSection.module.css"
 import {ReactComponent as Cross} from "./../../icons/Cross.svg";
 import {ReactComponent as Paste} from "./../../icons/Paste.svg";
-import {useState} from "react";
 
 const InputSection = ({index, player, handleInputChange, handleRemove}) => {
     return (
