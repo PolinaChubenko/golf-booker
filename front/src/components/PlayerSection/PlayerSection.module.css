@@ -8,6 +8,8 @@
     margin-left: 30%;
     display: grid;
     grid-template-columns: 4fr 4fr 4fr;
+    line-height: 100%;
+    margin-top: 4%;
 }
 
 .player_section_wrapper {

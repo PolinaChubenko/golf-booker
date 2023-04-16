@@ -15,7 +15,7 @@ const Modal = ({ handleOnClose, show, eventId }) => {
     }
 
     const [playerList, setPlayerList] = useState([{
-        is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: null
+        is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: ""
     }]);
     const [isUploaded, setIsUploaded] = useState(false);
 
@@ -37,7 +37,7 @@ const Modal = ({ handleOnClose, show, eventId }) => {
     const handleAddClick = () => {
         if (playerList.length < 4) {
             setPlayerList([...playerList, {
-                is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: null
+                is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: ""
             }]);
         }
     };
@@ -95,12 +95,20 @@ const Modal = ({ handleOnClose, show, eventId }) => {
                     />
                     {playerList.length < 4 && <Add className={style.icon} onClick={handleAddClick}/>}
                 </div>
-                <button type="button" className={[style.btn, style.red_color].join(" ")} onClick={handleClose}>
-                    Отменить
-                </button>
-                <button type="button" className={[style.btn, style.green_color].join(" ")}>
-                    Сохранить
-                </button>
+                <div className={style.players_wrapper}>
+                    <p>Комментарий</p>
+                </div>
+                <div className={style.comment_wrapper}>
+                    <textarea placeholder={"Место для заметок или дополнительной информации"}></textarea>
+                </div>
+                <div className={style.btns_wrapper}>
+                    <button type="button" className={[style.btn, style.red_color].join(" ")} onClick={handleClose}>
+                        Отменить
+                    </button>
+                    <button type="button" className={[style.btn, style.green_color].join(" ")}>
+                        Сохранить
+                    </button>
+                </div>
             </section>
         </div>
     );
