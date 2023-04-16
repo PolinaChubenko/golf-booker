@@ -13,14 +13,14 @@ import {CalendarStyleWrapper} from "./StylingCalendar";
 const Calendar = (props) => {
     const [isModal, setIsModal] = useState(false)
     const [events, setEvents] = useState([])
-    const [eventId, setEventId] = useState(null)
+    const [slot, setSlot] = useState(null)
 
     useEffect(() => {
         setEvents(data)
     }, [])
 
-    const showModal = (id) => {
-        setEventId(id)
+    const showModal = (time) => {
+        setSlot(time)
         setIsModal(true)
     };
     const hideModal = () => {
@@ -32,8 +32,7 @@ const Calendar = (props) => {
     }
 
     const handleEventClick = (info) => {
-        showModal(info.event.id)
-        // info.event.startStr
+        showModal(info.event.startStr)
     }
 
     const handleDateClick = (info) => {
@@ -45,8 +44,7 @@ const Calendar = (props) => {
             end: end.format("YYYY-MM-DD HH:mm")
         }
         setEvents(oldArray => [...oldArray, new_event]);
-        showModal(null)
-        // info.dateStr
+        showModal(info.dateStr)
     }
 
     const handleEventDidMount = (info) => {
@@ -62,7 +60,7 @@ const Calendar = (props) => {
 
     return (
         <div>
-            <Modal show={isModal} handleOnClose={hideModal} eventId={eventId}></Modal>
+            <Modal show={isModal} handleOnClose={hideModal} slot={slot}></Modal>
             <div className={style.calendar}>
                 <div className={style.title}>Бронирование Tee-time</div>
                 <CalendarStyleWrapper>
