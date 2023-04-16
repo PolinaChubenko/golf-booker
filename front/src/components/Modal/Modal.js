@@ -16,9 +16,7 @@ const Modal = ({ handleOnClose, show, slot }) => {
         setTee([teeDate, teeTime])
     }
 
-    const [playerList, setPlayerList] = useState([{
-        is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: ""
-    }]);
+    const [playerList, setPlayerList] = useState([]);
     const [isUploaded, setIsUploaded] = useState(false);
     const [comment, setComment] = useState("")
 
@@ -27,10 +25,18 @@ const Modal = ({ handleOnClose, show, slot }) => {
     }, [tee, slot])
 
     useEffect(() => {
-        // in the future, we will use ajaxRequest for uploading info by eventId
-        setPlayerList([{
-            is_new: false, member: false, name: "Полина", surname: "Чубенко", email: "bla@bla.com", phone: "+79991234567", hcp: 5.5
-        }]);
+        const uploadedList = [];
+        ajaxService(`/bookings/?slot=${slot}`).then((data) => {
+            data.bookings.forEach((player) => {
+                uploadedList.push({...player, is_new: false});
+            });
+            setPlayerList(uploadedList);
+            if (playerList.length === 0) {
+                setPlayerList([{
+                    is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: ""
+                }]);
+            }
+        }).then();
         setIsUploaded(true);
     }, [isUploaded])
 
@@ -75,14 +81,9 @@ const Modal = ({ handleOnClose, show, slot }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = {
-            slot: slot,
-            bookings: playerList,
-            comment: comment
-        }
         ajaxService(`/slot`, {
             method: 'POST',
-            body: JSON.stringify(data),
+            body: JSON.stringify({slot: slot, bookings: playerList, comment: comment}),
             headers: {
                 'Content-Type': 'application/json'
             }
