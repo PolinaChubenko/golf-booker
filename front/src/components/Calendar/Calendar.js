@@ -31,12 +31,12 @@ const Calendar = (props) => {
         successCallback(events)
     }
 
-    const clickEvent = (info) => {
+    const handleEventClick = (info) => {
         showModal(info.event.id)
         // info.event.startStr
     }
 
-    const addEvent = (info) => {
+    const handleDateClick = (info) => {
         const start = moment(info.dateStr);
         const end = moment(info.dateStr).add(10, "m");
         const new_event = {
@@ -49,7 +49,7 @@ const Calendar = (props) => {
         // info.dateStr
     }
 
-    const colorEventByTitle = (info) => {
+    const handleEventDidMount = (info) => {
         const calendarEventEl = info.el;
         if (info.event.title === "Мест нет") {
             calendarEventEl.style.backgroundColor = "#ABABAB";
@@ -62,7 +62,7 @@ const Calendar = (props) => {
 
     return (
         <div>
-            <Modal show={isModal} handleClose={hideModal} eventId={eventId}></Modal>
+            <Modal show={isModal} handleOnClose={hideModal} firstOpen={true} eventId={eventId}></Modal>
             <div className={style.calendar}>
                 <div className={style.title}>Бронирование Tee-time</div>
                 <CalendarStyleWrapper>
@@ -106,12 +106,11 @@ const Calendar = (props) => {
                         }}
 
                         events={handleEvent}
-                        // eventColor={'#ABABAB'}
                         eventTextColor={'#494C62'}
                         displayEventTime={false}
-                        eventClick={props.is_admin ? clickEvent : null}
-                        dateClick={props.is_admin ? addEvent : null}
-                        eventDidMount={colorEventByTitle}
+                        eventClick={props.is_admin ? handleEventClick : null}
+                        dateClick={props.is_admin ? handleDateClick : null}
+                        eventDidMount={handleEventDidMount}
                     />
                 </CalendarStyleWrapper>
             </div>
