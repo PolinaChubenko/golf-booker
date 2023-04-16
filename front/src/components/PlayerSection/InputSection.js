@@ -1,7 +1,6 @@
 import style from "./PlayerSection.module.css"
 import {ReactComponent as Cross} from "./../../icons/Cross.svg";
 import {ReactComponent as Paste} from "./../../icons/Paste.svg";
-import {useState} from "react";
 
 const InputSection = ({index, player, handleInputChange, handleRemove}) => {
     return (
@@ -13,13 +12,13 @@ const InputSection = ({index, player, handleInputChange, handleRemove}) => {
                        onChange={e => handleInputChange(e, index)}/>
                 <input name={"surname"} placeholder={"Фамилия"} value={player.surname}
                        onChange={e => handleInputChange(e, index)}/>
-                <input name={"email"} placeholder={"E-mail"} value={player.email}
+                <input name={"email"} type={"email"} placeholder={"E-mail"} value={player.email} autoComplete={true}
                        onChange={e => handleInputChange(e, index)}/>
             </div>
             <div>
-                <input name={"phone"} placeholder={"Телефон"} value={player.phone}
+                <input name={"phone"} type={"tel"} placeholder={"Телефон"} value={player.phone} autoComplete={true}
                        onChange={e => handleInputChange(e, index)}/>
-                <input name={"hcp"} placeholder={"Гандикап"} value={player.hcp}
+                <input name={"hcp"} type={"number"} step={0.1} placeholder={"Гандикап"} value={player.hcp}
                        onChange={e => handleInputChange(e, index)}/>
             </div>
             <div></div>

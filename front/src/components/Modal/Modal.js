@@ -3,27 +3,40 @@ import React, {useEffect, useState} from "react";
 import moment from "moment/moment";
 import SectionController from "../PlayerSection/SectionController";
 import {ReactComponent as Add} from "./../../icons/Add.svg";
+import {ajaxService} from "../../services/ajaxService";
 
-const Modal = ({ handleOnClose, show, eventId }) => {
+const Modal = ({ handleOnClose, show, slot }) => {
     const showHideClassName = show ? style.display_block : style.display_none;
 
-    const [teeTime, setTeeTime] = useState(null)
+    const [tee, setTee] = useState([])
 
     const setTeeTimeForModal= (time) => {
-        const teeTime = moment(time).format("DD.MM, HH:mm");
-        setTeeTime(teeTime)
+        const teeDate = moment(time).format("DD.MM");
+        const teeTime = moment(time).format("HH:mm");
+        setTee([teeDate, teeTime])
     }
 
-    const [playerList, setPlayerList] = useState([{
-        is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: null
-    }]);
+    const [playerList, setPlayerList] = useState([]);
     const [isUploaded, setIsUploaded] = useState(false);
+    const [comment, setComment] = useState("")
 
     useEffect(() => {
-        // in the future, we will use ajaxRequest for uploading info by eventId
-        setPlayerList([{
-            is_new: false, member: false, name: "Полина", surname: "Чубенко", email: "bla@bla.com", phone: "+79991234567", hcp: 5.5
-        }]);
+        setTeeTimeForModal(slot);
+    }, [tee, slot])
+
+    useEffect(() => {
+        const uploadedList = [];
+        ajaxService(`/bookings/?slot=${slot}`).then((data) => {
+            data.bookings.forEach((player) => {
+                uploadedList.push({...player, is_new: false});
+            });
+            setPlayerList(uploadedList);
+            if (playerList.length === 0) {
+                setPlayerList([{
+                    is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: ""
+                }]);
+            }
+        }).then();
         setIsUploaded(true);
     }, [isUploaded])
 
@@ -37,7 +50,7 @@ const Modal = ({ handleOnClose, show, eventId }) => {
     const handleAddClick = () => {
         if (playerList.length < 4) {
             setPlayerList([...playerList, {
-                is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: null
+                is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: ""
             }]);
         }
     };
@@ -47,21 +60,6 @@ const Modal = ({ handleOnClose, show, eventId }) => {
         list.splice(index, 1);
         setPlayerList(list);
     };
-
-    // const handleSubmit = (event) => {
-    //     event.preventDefault();
-    //     if (!name || !surname || !email || !phone) {
-    //         setError("не все поля заполнены");
-    //         return;
-    //     }
-    //     ajaxService(`/blogs`, {
-    //         method: 'POST',
-    //         body: JSON.stringify({ name: name, surname: surname, email: email, phone: phone, hcp: hcp }),
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     }).then();
-    // }
 
     const handleClose = () => {
         handleOnClose();
@@ -77,11 +75,28 @@ const Modal = ({ handleOnClose, show, eventId }) => {
         })
     }
 
+    const handleCommentChange = (event) => {
+        setComment(event.target.value)
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        ajaxService(`/slot`, {
+            method: 'POST',
+            body: JSON.stringify({slot: slot, bookings: playerList, comment: comment}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            handleClose();
+        });
+    }
+
     return (
         <div className={[showHideClassName, style.modal].join(" ")}>
             <section className={style.modal_main}>
                 <div className={style.tee_time_wrapper}>
-                    <p>Запись 14.04 на время 10:30</p>
+                    <p>Запись {tee[0]} на время {tee[1]}</p>
                 </div>
                 <div className={style.players_wrapper}>
                     <p>Игроки</p>
@@ -95,12 +110,21 @@ const Modal = ({ handleOnClose, show, eventId }) => {
                     />
                     {playerList.length < 4 && <Add className={style.icon} onClick={handleAddClick}/>}
                 </div>
-                <button type="button" className={[style.btn, style.red_color].join(" ")} onClick={handleClose}>
-                    Отменить
-                </button>
-                <button type="button" className={[style.btn, style.green_color].join(" ")}>
-                    Сохранить
-                </button>
+                <div className={style.players_wrapper}>
+                    <p>Комментарий</p>
+                </div>
+                <div className={style.comment_wrapper}>
+                    <textarea placeholder={"Место для заметок или дополнительной информации"}
+                              onChange={handleCommentChange}></textarea>
+                </div>
+                <div className={style.btns_wrapper}>
+                    <button type="button" className={[style.btn, style.red_color].join(" ")} onClick={handleClose}>
+                        Отменить
+                    </button>
+                    <button type="button" className={[style.btn, style.green_color].join(" ")} onClick={handleSubmit}>
+                        Сохранить
+                    </button>
+                </div>
             </section>
         </div>
     );
