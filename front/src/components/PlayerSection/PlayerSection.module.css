@@ -1,0 +1,62 @@
+.icon {
+    height: 20px !important;
+    width: 20px !important;
+}
+
+.icons_wrapper {
+    margin-left: 30%;
+    display: grid;
+    grid-template-columns: 4fr 4fr 4fr;
+}
+
+.player_section_wrapper {
+    border: 0.2rem solid #D9D9D9;
+    border-radius: 10px;
+    height: 30px;
+    line-height: 30px;
+    margin: 2% 3%;
+    padding: 10px;
+    font-size: 18px;
+    color: #494C62;
+
+    display: grid;
+    grid-template-columns: 1fr 4fr 3fr 2fr 2fr;
+}
+
+.handicap {
+    background-color: #D9D9D9;
+    border-radius: 4px;
+    width: 70px;
+    margin: auto 0 auto auto;
+}
+
+.player_info {
+    margin: auto auto auto 10%;
+}
+
+.input_section_wrapper {
+    border: 0.2rem solid #D9D9D9;
+    border-radius: 10px;
+    height: 120px;
+    line-height: 30px;
+    margin: 3%;
+    padding: 10px;
+
+    display: grid;
+    grid-template-columns: 1fr 4fr 4fr 3fr;
+}
+
+.input_section_wrapper input {
+    height: 30px;
+    line-height: 30px;
+    width: 80%;
+    background: rgba(255, 255, 255, 0.74);
+    border: 1px solid #D9D9D9;
+    border-radius: 5px;
+    margin: 1%;
+    font-family: 'Manrope', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+}
+

@@ -8,19 +8,19 @@ import style from "./Calendar.module.css";
 import moment from "moment";
 import Modal from "../Modal/Modal.js";
 import {CalendarStyleWrapper} from "./StylingCalendar";
-import Balloon from "../Balloon/Balloon";
-import { createRoot } from 'react-dom/client';
 
 
 const Calendar = (props) => {
     const [isModal, setIsModal] = useState(false)
     const [events, setEvents] = useState([])
+    const [eventId, setEventId] = useState(null)
 
     useEffect(() => {
         setEvents(data)
     }, [])
 
-    const showModal = () => {
+    const showModal = (id) => {
+        setEventId(id)
         setIsModal(true)
     };
     const hideModal = () => {
@@ -31,20 +31,9 @@ const Calendar = (props) => {
         successCallback(events)
     }
 
-    const eventDidMount = (info) => {
-        // console.log(info.el)
-        // let questionMark = document.createElement('strong');
-        // const root = createRoot(info.el.querySelector('.fc-event-main'));
-        // const eventComponent = <Balloon eventElement={questionMark} />;
-        // info.el.innerHTML = '';
-        // const root = createRoot(info.el)
-        // console.log(root)
-        // root.render(questionMark);
-        // console.log(eventComponent)
-    };
-
     const clickEvent = (info) => {
-        console.log("here will be balloon")
+        showModal(info.event.id)
+        // info.event.startStr
     }
 
     const addEvent = (info) => {
@@ -56,13 +45,24 @@ const Calendar = (props) => {
             end: end.format("YYYY-MM-DD HH:mm")
         }
         setEvents(oldArray => [...oldArray, new_event]);
-        showModal()
+        showModal(null)
+        // info.dateStr
+    }
+
+    const colorEventByTitle = (info) => {
+        const calendarEventEl = info.el;
+        if (info.event.title === "Мест нет") {
+            calendarEventEl.style.backgroundColor = "#ABABAB";
+            calendarEventEl.style.borderColor = "#ABABAB";
+        } else {
+            calendarEventEl.style.backgroundColor = "#D4D0D0";
+            calendarEventEl.style.borderColor = "#D4D0D0";
+        }
     }
 
     return (
         <div>
-            <Modal show={isModal} handleClose={hideModal}>
-            </Modal>
+            <Modal show={isModal} handleClose={hideModal} eventId={eventId}></Modal>
             <div className={style.calendar}>
                 <div className={style.title}>Бронирование Tee-time</div>
                 <CalendarStyleWrapper>
@@ -106,12 +106,12 @@ const Calendar = (props) => {
                         }}
 
                         events={handleEvent}
-                        eventColor={'#ABABAB'}
+                        // eventColor={'#ABABAB'}
                         eventTextColor={'#494C62'}
                         displayEventTime={false}
-                        eventClick={clickEvent}
-                        eventDidMount={eventDidMount}
+                        eventClick={props.is_admin ? clickEvent : null}
                         dateClick={props.is_admin ? addEvent : null}
+                        eventDidMount={colorEventByTitle}
                     />
                 </CalendarStyleWrapper>
             </div>

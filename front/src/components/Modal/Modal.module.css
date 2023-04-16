@@ -2,7 +2,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    width:100%;
+    width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
     z-index: 1;
@@ -12,7 +12,7 @@
     z-index: 1;
     position: fixed;
     background: white;
-    width: 80%;
+    width: 60%;
     height: 800px;
     top:50%;
     left:50%;
@@ -27,4 +27,55 @@
 .display_none {
     z-index: 1;
     display: none;
+}
+
+.btn {
+    width: 100px;
+    height: 35px;
+    border-radius: 5%;
+    border: 1px solid #D9D9D9;
+    font-family: 'Manrope', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: #000000;
+}
+
+.green_color {
+    background: #BBFBC2;
+}
+
+.red_color {
+    background: #E5C1C1;
+}
+
+/*--inner-stuff--*/
+
+.tee_time_wrapper {
+    margin: 3% auto;
+}
+
+.tee_time_wrapper p {
+    /*font-family: 'Inter', serif;*/
+    font-style: normal;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 150%;
+    margin: auto;
+    text-transform: none;
+}
+
+.players_wrapper {
+    width: 150px;
+}
+
+.players_wrapper p {
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 150%;
+    margin: auto;
+    text-transform: none;
 }
