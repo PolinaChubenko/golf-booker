@@ -18,19 +18,20 @@ const Modal = ({ handleClose, show, eventId }) => {
         <div className={[showHideClassName, style.modal].join(" ")}>
             <section className={style.modal_main}>
                 <div className={style.tee_time_wrapper}>
-                    <p>Слот 14.04 на время 10:30</p>
+                    <p>Запись 14.04 на время 10:30</p>
                 </div>
                 <div className={style.players_wrapper}>
                     <p>Игроки</p>
                 </div>
                 <div>
-                    <PlayerSection />
+                    <PlayerSection member={true} name_and_surname={"Полина Чубенко"} phone={"+79991234567"} hcp={5.5}/>
+                    <PlayerSection member={false} name_and_surname={"Егор Сбродов"} phone={"+79991234567"} hcp={15.5}/>
                     <InputSection />
                 </div>
-                <button type="button" onClick={handleClose}>
+                <button type="button" className={[style.btn, style.red_color].join(" ")} onClick={handleClose}>
                     Отменить
                 </button>
-                <button type="button" onClick={handleClose}>
+                <button type="button" className={[style.btn, style.green_color].join(" ")} onClick={handleClose}>
                     Сохранить
                 </button>
             </section>

@@ -29,6 +29,27 @@
     display: none;
 }
 
+.btn {
+    width: 100px;
+    height: 35px;
+    border-radius: 5%;
+    border: 1px solid #D9D9D9;
+    font-family: 'Manrope', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: #000000;
+}
+
+.green_color {
+    background: #BBFBC2;
+}
+
+.red_color {
+    background: #E5C1C1;
+}
+
 /*--inner-stuff--*/
 
 .tee_time_wrapper {
