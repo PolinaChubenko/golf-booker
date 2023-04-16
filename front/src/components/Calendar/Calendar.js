@@ -62,7 +62,7 @@ const Calendar = (props) => {
 
     return (
         <div>
-            <Modal show={isModal} handleOnClose={hideModal} firstOpen={true} eventId={eventId}></Modal>
+            <Modal show={isModal} handleOnClose={hideModal} eventId={eventId}></Modal>
             <div className={style.calendar}>
                 <div className={style.title}>Бронирование Tee-time</div>
                 <CalendarStyleWrapper>

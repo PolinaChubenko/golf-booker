@@ -4,7 +4,7 @@ import moment from "moment/moment";
 import SectionController from "../PlayerSection/SectionController";
 import {ReactComponent as Add} from "./../../icons/Add.svg";
 
-const Modal = ({ handleOnClose, show, firstOpen, eventId }) => {
+const Modal = ({ handleOnClose, show, eventId }) => {
     const showHideClassName = show ? style.display_block : style.display_none;
 
     const [teeTime, setTeeTime] = useState(null)
@@ -14,37 +14,38 @@ const Modal = ({ handleOnClose, show, firstOpen, eventId }) => {
         setTeeTime(teeTime)
     }
 
-    const [inputList, setInputList] = useState([{
+    const [playerList, setPlayerList] = useState([{
         is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: null
     }]);
+    const [isUploaded, setIsUploaded] = useState(false);
 
     useEffect(() => {
         // in the future, we will use ajaxRequest for uploading info by eventId
-        setInputList([{
+        setPlayerList([{
             is_new: false, member: false, name: "Полина", surname: "Чубенко", email: "bla@bla.com", phone: "+79991234567", hcp: 5.5
         }]);
-        firstOpen = false;
-    }, [firstOpen === true])
+        setIsUploaded(true);
+    }, [isUploaded])
 
     const handleInputChange = (e, index) => {
         const { name, value } = e.target;
-        const list = [...inputList];
+        const list = [...playerList];
         list[index][name] = value;
-        setInputList(list);
+        setPlayerList(list);
     };
 
     const handleAddClick = () => {
-        if (inputList.length < 4) {
-            setInputList([...inputList, {
+        if (playerList.length < 4) {
+            setPlayerList([...playerList, {
                 is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: null
             }]);
         }
     };
 
     const handleRemove = index => {
-        const list = [...inputList];
+        const list = [...playerList];
         list.splice(index, 1);
-        setInputList(list);
+        setPlayerList(list);
     };
 
     // const handleSubmit = (event) => {
@@ -64,15 +65,15 @@ const Modal = ({ handleOnClose, show, firstOpen, eventId }) => {
 
     const handleClose = () => {
         handleOnClose();
-        setInputList([])
-        firstOpen = true;
+        setPlayerList([])
+        setIsUploaded(false);
     }
 
     const handleOpenEdit = index => {
-        setInputList((inputList) => {
-            const updatedInputList = [...inputList];
-            updatedInputList[index] = {...updatedInputList[index], is_new: true};
-            return updatedInputList;
+        setPlayerList((playersList) => {
+            const updatedList = [...playersList];
+            updatedList[index] = {...updatedList[index], is_new: true};
+            return updatedList;
         })
     }
 
@@ -87,12 +88,12 @@ const Modal = ({ handleOnClose, show, firstOpen, eventId }) => {
                 </div>
                 <div>
                     <SectionController
-                        inputList={inputList}
+                        playerList={playerList}
                         handleOpenEdit={handleOpenEdit}
                         handleInputChange={handleInputChange}
                         handleRemove={handleRemove}
                     />
-                    {inputList.length < 4 && <Add className={style.icon} onClick={handleAddClick}/>}
+                    {playerList.length < 4 && <Add className={style.icon} onClick={handleAddClick}/>}
                 </div>
                 <button type="button" className={[style.btn, style.red_color].join(" ")} onClick={handleClose}>
                     Отменить

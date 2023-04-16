@@ -3,23 +3,23 @@ import {ReactComponent as Cross} from "./../../icons/Cross.svg";
 import {ReactComponent as Paste} from "./../../icons/Paste.svg";
 import {useState} from "react";
 
-const InputSection = ({index, user_info, handleInputChange, handleRemove}) => {
+const InputSection = ({index, player, handleInputChange, handleRemove}) => {
     return (
         <div className={style.input_section_wrapper}>
             <div>
             </div>
             <div>
-                <input name={"name"} placeholder={"Имя"} value={user_info.name}
+                <input name={"name"} placeholder={"Имя"} value={player.name}
                        onChange={e => handleInputChange(e, index)}/>
-                <input name={"surname"} placeholder={"Фамилия"} value={user_info.surname}
+                <input name={"surname"} placeholder={"Фамилия"} value={player.surname}
                        onChange={e => handleInputChange(e, index)}/>
-                <input name={"email"} placeholder={"E-mail"} value={user_info.email}
+                <input name={"email"} placeholder={"E-mail"} value={player.email}
                        onChange={e => handleInputChange(e, index)}/>
             </div>
             <div>
-                <input name={"phone"} placeholder={"Телефон"} value={user_info.phone}
+                <input name={"phone"} placeholder={"Телефон"} value={player.phone}
                        onChange={e => handleInputChange(e, index)}/>
-                <input name={"hcp"} placeholder={"Гандикап"} value={user_info.hcp}
+                <input name={"hcp"} placeholder={"Гандикап"} value={player.hcp}
                        onChange={e => handleInputChange(e, index)}/>
             </div>
             <div></div>
