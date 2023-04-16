@@ -1,7 +1,8 @@
 import style from "./Modal.module.css"
 import React, {useState} from "react";
 import moment from "moment/moment";
-import InputSection from "../InputSection/InputSection";
+import InputSection from "../PlayerSection/InputSection";
+import PlayerSection from "../PlayerSection/PlayerSection";
 
 const Modal = ({ handleClose, show, eventId }) => {
     const showHideClassName = show ? style.display_block : style.display_none;
@@ -23,6 +24,7 @@ const Modal = ({ handleClose, show, eventId }) => {
                     <p>Игроки</p>
                 </div>
                 <div>
+                    <PlayerSection />
                     <InputSection />
                 </div>
                 <button type="button" onClick={handleClose}>
