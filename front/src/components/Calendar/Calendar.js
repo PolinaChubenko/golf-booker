@@ -3,21 +3,16 @@ import FullCalendar from '@fullcalendar/react' // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid' // a plugin!
 import interactionPlugin from '@fullcalendar/interaction';
 import {useState} from "react";
-import data from '../../test_bd.json';
 import style from "./Calendar.module.css";
 import moment from "moment";
 import Modal from "../Modal/Modal.js";
 import {CalendarStyleWrapper} from "./StylingCalendar";
+import {ajaxService} from "../../services/ajaxService";
 
 
 const Calendar = (props) => {
     const [isModal, setIsModal] = useState(false)
-    const [events, setEvents] = useState([])
     const [slot, setSlot] = useState(null)
-
-    useEffect(() => {
-        setEvents(data)
-    }, [])
 
     const showModal = (time) => {
         setSlot(time)
@@ -28,7 +23,17 @@ const Calendar = (props) => {
     };
 
     const handleEvent = (info, successCallback, failureCallback) => {
-        successCallback(events)
+        ajaxService(`/slot/list?start=${info.startStr.valueOf()}&end=${info.endStr.valueOf()}`).then((data) => {
+            successCallback(data.map((eventEl) => {
+                const start = moment(eventEl['slot']).add(10, "h");
+                const end = moment(eventEl['slot']).add(10, "h").add(10, "m");
+                return {
+                  title: eventEl['participants'],
+                  start: start.format("YYYY-MM-DD HH:mm"),
+                  end: end.format("YYYY-MM-DD HH:mm")
+                }
+            }));
+        }).then();
     }
 
     const handleEventClick = (info) => {
@@ -43,7 +48,7 @@ const Calendar = (props) => {
             start: start.format("YYYY-MM-DD HH:mm"),
             end: end.format("YYYY-MM-DD HH:mm")
         }
-        setEvents(oldArray => [...oldArray, new_event]);
+        // setEvents(oldArray => [...oldArray, new_event]);
         showModal(info.dateStr)
     }
 

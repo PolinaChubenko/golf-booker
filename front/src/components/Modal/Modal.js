@@ -26,7 +26,7 @@ const Modal = ({ handleOnClose, show, slot }) => {
 
     useEffect(() => {
         const uploadedList = [];
-        ajaxService(`/bookings/?slot=${slot}`).then((data) => {
+        ajaxService(`slot?slot=${slot}`).then((data) => {
             data.bookings.forEach((player) => {
                 uploadedList.push({...player, is_new: false});
             });
