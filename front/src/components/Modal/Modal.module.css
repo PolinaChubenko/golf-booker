@@ -40,6 +40,7 @@
     font-size: 14px;
     line-height: 150%;
     color: #000000;
+    cursor: pointer;
 }
 
 .green_color {
@@ -53,7 +54,7 @@
 /*--inner-stuff--*/
 
 .tee_time_wrapper {
-    margin: 3% auto;
+    margin: 3% auto 1% auto;
 }
 
 .tee_time_wrapper p {
@@ -79,3 +80,10 @@
     margin: auto;
     text-transform: none;
 }
+
+.icon {
+    height: 20px !important;
+    width: 20px !important;
+    cursor: pointer;
+}
+
