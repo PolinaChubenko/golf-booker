@@ -51,9 +51,8 @@ export function ajaxAuthService(url, params = {}) {
         throw Error();
     });
 }
-
-export function ajaxService(url) {
-    return fetch('http://127.0.0.1:8080/api/' + url).then((data) => {
+export function ajaxService(url, params = {}) {
+    return fetch(`${process.env.REACT_APP_API}/api` + url, params).then((data) => {
         return data.json();
     });
 }
