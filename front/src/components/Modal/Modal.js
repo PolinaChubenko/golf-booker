@@ -17,28 +17,25 @@ const Modal = ({ handleOnClose, show, slot }) => {
     }
 
     const [playerList, setPlayerList] = useState([]);
-    const [isUploaded, setIsUploaded] = useState(false);
     const [comment, setComment] = useState("")
 
     useEffect(() => {
         setTeeTimeForModal(slot);
-    }, [tee, slot])
-
-    useEffect(() => {
-        const uploadedList = [];
-        ajaxService(`/bookings/?slot=${slot}`).then((data) => {
-            data.bookings.forEach((player) => {
-                uploadedList.push({...player, is_new: false});
-            });
-            setPlayerList(uploadedList);
-            if (playerList.length === 0) {
-                setPlayerList([{
-                    is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: ""
-                }]);
-            }
-        }).then();
-        setIsUploaded(true);
-    }, [isUploaded])
+        if (slot !== null) {
+            const uploadedList = [];
+            ajaxService(`/slot?slot=${slot}`).then((data) => {
+                data.bookings.forEach((player) => {
+                    uploadedList.push({...player, is_new: false});
+                });
+                setPlayerList(uploadedList);
+                if (playerList.length === 0) {
+                    setPlayerList([{
+                        is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: ""
+                    }]);
+                }
+            }).then();
+        }
+    }, [slot])
 
     const handleInputChange = (e, index) => {
         const { name, value } = e.target;
@@ -64,7 +61,6 @@ const Modal = ({ handleOnClose, show, slot }) => {
     const handleClose = () => {
         handleOnClose();
         setPlayerList([])
-        setIsUploaded(false);
     }
 
     const handleOpenEdit = index => {
