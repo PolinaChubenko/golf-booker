@@ -127,7 +127,7 @@ const Calendar = (props) => {
                     eventClick={props.is_admin ? handleEventClick : null}
                     dateClick={props.is_admin ? handleDateClick : null}
                     eventMouseEnter={handleMouseEnter}
-                    //eventMouseLeave={handleMouseLeave}
+                    eventMouseLeave={handleMouseLeave}
                     events={handleEvent}
                 />
             </div>
