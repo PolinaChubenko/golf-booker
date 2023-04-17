@@ -3,7 +3,7 @@ import {ReactComponent as Cross} from "./../../icons/Cross.svg";
 import {ReactComponent as Edit} from "./../../icons/Edit.svg";
 import {ReactComponent as Copy} from "./../../icons/Copy.svg";
 
-const PlayerSection = ({index, player, handleOpenEdit}) => {
+const PlayerSection = ({index, player, handleOpenEdit, handleRemove}) => {
     return (
         <div className={style.player_section_wrapper}>
             <div>{player.member ? "ЧК" : "!ЧК"}</div>
@@ -15,7 +15,7 @@ const PlayerSection = ({index, player, handleOpenEdit}) => {
             <div className={style.icons_wrapper}>
                 <div><Copy className={style.icon}/></div>
                 <div><Edit className={style.icon} onClick={() => handleOpenEdit(index)}/></div>
-                <div><Cross className={style.icon}></Cross></div>
+                <div><Cross className={style.icon} onClick={() => handleRemove(index)}></Cross></div>
             </div>
         </div>
     )

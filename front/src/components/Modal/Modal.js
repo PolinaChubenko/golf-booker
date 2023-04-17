@@ -5,40 +5,47 @@ import SectionController from "../PlayerSection/SectionController";
 import {ReactComponent as Add} from "./../../icons/Add.svg";
 import {ajaxService} from "../../services/ajaxService";
 
-const Modal = ({ handleOnClose, show, slot }) => {
+const Modal = ({handleOnClose, show, slot}) => {
     const showHideClassName = show ? style.display_block : style.display_none;
 
     const [tee, setTee] = useState([])
 
-    const setTeeTimeForModal= (time) => {
+    const setTeeTimeForModal = (time) => {
         const teeDate = moment(time).format("DD.MM");
         const teeTime = moment(time).format("HH:mm");
         setTee([teeDate, teeTime])
     }
 
+    const [isUploaded, setIsUploaded] = useState(false)
     const [playerList, setPlayerList] = useState([]);
-    const [isUploaded, setIsUploaded] = useState(false);
     const [comment, setComment] = useState("")
 
     useEffect(() => {
         setTeeTimeForModal(slot);
-    }, [tee, slot])
-
-    useEffect(() => {
-        const uploadedList = [];
-        ajaxService(`/bookings/?slot=${slot}`).then((data) => {
-            data.bookings.forEach((player) => {
-                uploadedList.push({...player, is_new: false});
+        if (slot !== null) {
+            setPlayerList([]);
+            ajaxService(`/slot?slot=${slot}`).then((data) => {
+                const uploadedList = [];
+                if (data.success === true) {
+                    if (data.result.bookings.length !== 0) {
+                        data.result.bookings.forEach((player) => {
+                            uploadedList.push({...player, is_new: false});
+                        });
+                        setComment(data.result.comment)
+                        setPlayerList(uploadedList);
+                    }
+                }
+                else {
+                    setPlayerList([{
+                        is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: ""
+                    }]);
+                    setComment("")
+                }
+            }).then(() => {
+                setIsUploaded(true);
             });
-            setPlayerList(uploadedList);
-            if (playerList.length === 0) {
-                setPlayerList([{
-                    is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: ""
-                }]);
-            }
-        }).then();
-        setIsUploaded(true);
-    }, [isUploaded])
+        }
+    }, [slot, isUploaded])
 
     const handleInputChange = (e, index) => {
         const { name, value } = e.target;
@@ -64,7 +71,7 @@ const Modal = ({ handleOnClose, show, slot }) => {
     const handleClose = () => {
         handleOnClose();
         setPlayerList([])
-        setIsUploaded(false);
+        setIsUploaded(false)
     }
 
     const handleOpenEdit = index => {
@@ -114,7 +121,7 @@ const Modal = ({ handleOnClose, show, slot }) => {
                     <p>Комментарий</p>
                 </div>
                 <div className={style.comment_wrapper}>
-                    <textarea placeholder={"Место для заметок или дополнительной информации"}
+                    <textarea placeholder={"Место для заметок или дополнительной информации"} value={comment}
                               onChange={handleCommentChange}></textarea>
                 </div>
                 <div className={style.btns_wrapper}>
