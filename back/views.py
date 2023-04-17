@@ -24,6 +24,8 @@ def api_slot():
             })
         bookings = list(Booking.find({"slot": slot}))
         response = {
+            "success": True,
+            "result": {
             "time": str(slot.time),
             "comment": slot.comment,
             "bookings": [
@@ -37,6 +39,7 @@ def api_slot():
                 }
                 for booking in bookings
             ]
+            }
         }
         return json.dumps(response)
     else:  # request.methods == "POST":
@@ -96,4 +99,7 @@ def api_slot_list():
                 for booking in bookings
             }
         })
-    return json.dumps(response)
+    return json.dumps({
+        "success": True,
+        "result": response
+    })
