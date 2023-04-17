@@ -3,7 +3,6 @@ import FullCalendar from '@fullcalendar/react' // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid' // a plugin!
 import interactionPlugin from '@fullcalendar/interaction';
 import {useState} from "react";
-import data from '../../test_bd.json';
 import style from "./Calendar.module.css";
 import moment from "moment";
 import Modal from "../Modal/Modal.js";
