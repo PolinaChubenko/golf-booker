@@ -131,8 +131,8 @@ const Calendar = (props) => {
                         eventClick={props.is_admin ? handleEventClick : null}
                         dateClick={props.is_admin ? handleDateClick : null}
                         eventDidMount={handleEventDidMount}
-                        eventMouseEnter={handleMouseEnter}
-                        eventMouseLeave={handleMouseLeave}
+                        eventMouseEnter={props.is_admin ? null : handleMouseEnter}
+                        eventMouseLeave={props.is_admin ? null : handleMouseLeave}
                     />
                 </CalendarStyleWrapper>
             </div>
