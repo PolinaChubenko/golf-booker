@@ -3,7 +3,7 @@ import style from "./CheckBox.module.css";
 
 const FREE_STATE = 0 // свободно (пусто)
 const MEMB_STATE = 1 // член клуба (галочка)
-const VIST_STATE = 2 // посетитель (минус)
+const VIST_STATE = 2 // посетитель (крестик)
 
 const getNextState = (state) => { // правила переключения
     state += 1
