@@ -38,6 +38,31 @@ def api_slot():
             ]
         }
         return json.dumps(response)
+    else:  # request.methods == "POST":
+        data = request.get_json()
+        bookings = data["bookings"]
+        slot = Slot.find_one({"time": parser.parse(data["slot"])})
+        if len(bookings) != 0 and slot is None:
+            slot = Slot(time=data["slot"], comment=data["comment"])
+            slot.commit()
+        old_bookings = list(Booking.find({"slot": slot}))
+        for b in old_bookings:
+            b.delete()
+        for b in bookings:
+            booking = Booking(
+                slot=slot,
+                name=b["name"],
+                surname=b["surname"],
+                phone=b["phone"],
+                email=b["email"],
+                member=b["member"]
+            )
+            booking.commit()
+        if len(bookings) == 0 and slot is not None:
+            slot.delete()
+        return json.dumps({
+            "success": True
+        })
 
 
 @app.route("/api/slot/list", methods=["GET"])
