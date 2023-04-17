@@ -1,4 +1,5 @@
 import React from 'react';
+import style from "./CheckBox.module.css";
 
 const FREE_STATE = 0 // свободно (пусто)
 const MEMB_STATE = 1 // член клуба (галочка)
@@ -20,7 +21,7 @@ const updateInput = (ref, checked) => { // Синхронизация состо
 };
 
 // Рассчитан только на три состояния
-const ThreeStateCheckbox = ({name, checked}) => {
+const ThreeStateCheckbox = ({name, checked, disabled}) => {
     const inputRef = React.useRef(FREE_STATE); // Состояние checkbox
     const checkedRef = React.useRef(checked); // Состояние для работы, синхронизируется с inputRef
     React.useEffect(() => { // вызывается, при создании checkbox (задание начального состояния)
@@ -32,15 +33,17 @@ const ThreeStateCheckbox = ({name, checked}) => {
         updateInput(inputRef, checkedRef.current);
     };
     return (
-        <input ref={inputRef} type="checkbox" name={name} onClick={handleClick} />
+        <label className="form-control">
+            <input ref={inputRef} type="checkbox" className={style.checkbox} name={name} onClick={handleClick} disabled={disabled}/>
+        </label>
     );
 };
 
-export const CheckBox = () => {
-    const [checked] = React.useState(FREE_STATE); // Значение по умолчанию
+export const CheckBox = ({value = 0, disabled = false}) => {
+    const [checked] = React.useState(value); // Значение по умолчанию
 
     return (
-        <ThreeStateCheckbox checked={checked} />
+        <ThreeStateCheckbox checked={checked} disabled={disabled}/>
     );
 };
 
