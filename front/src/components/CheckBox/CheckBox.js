@@ -1,50 +1,43 @@
 import React from 'react';
 
+const FREE_STATE = 0 // свободно (пусто)
+const MEMB_STATE = 1 // член клуба (галочка)
+const VIST_STATE = 2 // посетитель (минус)
+
+const getNextState = (state) => { // правила переключения
+    state += 1
+    state %= 3
+    return state
+}
+
 const updateInput = (ref, checked) => { // Синхронизация состояния checked с ref
     const input = ref.current;
     if (input) {
-        input.checked = checked; // галочка, если true
-        input.indeterminate = checked == null; // минус, если null
+        input.checked = (checked === MEMB_STATE); // галочка, если MEMB_STATE
+        input.indeterminate = (checked === VIST_STATE); // минус, если VIST_STATE
         // ничего, если false
     }
 };
 
 // Рассчитан только на три состояния
-const ThreeStateCheckbox = ({name, checked, onChange}) => {
-    const inputRef = React.useRef(null); // Состояние checkbox
-    const checkedRef = React.useRef(checked); // Состояние для работы, синхронизируем с inputRef
+const ThreeStateCheckbox = ({name, checked}) => {
+    const inputRef = React.useRef(FREE_STATE); // Состояние checkbox
+    const checkedRef = React.useRef(checked); // Состояние для работы, синхронизируется с inputRef
     React.useEffect(() => { // вызывается, при создании checkbox (задание начального состояния)
         checkedRef.current = checked;
         updateInput(inputRef, checked);
     }, [checked]);
-    const handleClick = () => { // правила переключения
-        switch (checkedRef.current) {
-            case false:
-                checkedRef.current = true;
-                break;
-            case true:
-                checkedRef.current = null;
-                break;
-            default: // null
-                checkedRef.current = false;
-                break;
-        }
+    const handleClick = () => {
+        checkedRef.current = getNextState(checkedRef.current)
         updateInput(inputRef, checkedRef.current);
-        // if (onChange) {
-        //     onChange(checkedRef.current);
-        // }
     };
     return (
         <input ref={inputRef} type="checkbox" name={name} onClick={handleClick} />
     );
 };
 
-// 1 : false (пустое)
-// 2 : true (галочка)
-// 3 : null (минус)
-
 export const CheckBox = () => {
-    const [checked] = React.useState(true); // Значение по умолчанию
+    const [checked] = React.useState(FREE_STATE); // Значение по умолчанию
 
     return (
         <ThreeStateCheckbox checked={checked} />
