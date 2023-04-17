@@ -5,6 +5,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom"
 import NotFound from "./components/NotFound/NotFound";
 import User from "./components/PageUser/User";
 import Admin from "./components/PageAdmin/Admin";
+import CheckBox from "./components/Checkbox/CheckBox";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
                 <Route path="/" element={<User />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/balloon" element={<Balloon />} />
+                <Route path="/checkbox" element={<CheckBox />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </BrowserRouter>

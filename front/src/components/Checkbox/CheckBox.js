@@ -6,12 +6,14 @@ const updateInput = (ref, checked) => {
         input.checked = checked;
         input.indeterminate = checked == null;
     }
+    console.log(ref)
+    console.log(checked)
 };
 
 const ThreeStateCheckbox = ({name, checked, onChange}) => {
-    const inputRef = React.useRef(null);
+    const inputRef = React.useRef(null); // Меняющееся значение checkbox
     const checkedRef = React.useRef(checked);
-    React.useEffect(() => {
+    React.useEffect(() => { // вызывается, епри рендере или если изменился checked
         checkedRef.current = checked;
         updateInput(inputRef, checked);
     }, [checked]);

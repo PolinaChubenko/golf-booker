@@ -8,6 +8,8 @@ import style from "./Calendar.module.css";
 import moment from "moment";
 import { Tooltip } from "bootstrap";
 import { CheckBox } from "../Checkbox/CheckBox"
+import zIndex from "@mui/material/styles/zIndex";
+import {colors} from "@mui/material";
 
 let tooltipInstance = null;
 
@@ -60,11 +62,9 @@ const Calendar = (props) => {
             + free_places + " свобоное место"
         if (info.event.extendedProps.description) {
             tooltipInstance = new Tooltip(info.el, {
-                //title: info.event.extendedProps.description,
                 title: inner_text,
                 html: true,
                 container: "body"
-
             });
 
             tooltipInstance.show();
