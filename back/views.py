@@ -8,8 +8,7 @@ from app import app
 from models import Slot, Booking
 
 
-@app.route("/api/slot", methods=["GET", "POST"])
-@cross_origin()
+@app.route("/api/slot", methods=["GET"])
 def api_slot():
     if request.method == "GET":
         if "slot" not in request.args:
@@ -18,6 +17,11 @@ def api_slot():
                 "reason": "'slot' property is not specified"
             })
         slot = Slot.find_one({"slot": request.args["slot"]})
+        if slot is None:
+            return json.dumps({
+                "success": False,
+                "reason": "No such slot"
+            })
         bookings = list(Booking.find({"slot": slot}))
         response = {
             "time": str(slot.time),
@@ -37,7 +41,6 @@ def api_slot():
 
 
 @app.route("/api/slot/list", methods=["GET"])
-@cross_origin()
 def api_slot_list():
     if "start" not in request.args or "end" not in request.args:
         return json.dumps({

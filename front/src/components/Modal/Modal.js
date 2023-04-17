@@ -22,7 +22,7 @@ const Modal = ({ handleOnClose, show, slot }) => {
 
     useEffect(() => {
         setTeeTimeForModal(slot);
-    }, [tee, slot])
+    }, [slot])
 
     useEffect(() => {
         const uploadedList = [];
