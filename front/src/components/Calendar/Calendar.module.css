@@ -1,8 +1,9 @@
 
 
 .calendar {
-    max-width: 1600px;
-    margin: 90px auto 150px auto;
+    width: 92.3%;
+    /*max-width: 1600px;*/
+    margin: 5% auto 5% auto;
 }
 
 

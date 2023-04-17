@@ -5,25 +5,26 @@ import SectionController from "../PlayerSection/SectionController";
 import {ReactComponent as Add} from "./../../icons/Add.svg";
 import {ajaxService} from "../../services/ajaxService";
 
-const Modal = ({ handleOnClose, show, slot }) => {
+const Modal = ({handleOnClose, show, slot}) => {
     const showHideClassName = show ? style.display_block : style.display_none;
 
     const [tee, setTee] = useState([])
 
-    const setTeeTimeForModal= (time) => {
+    const setTeeTimeForModal = (time) => {
         const teeDate = moment(time).format("DD.MM");
         const teeTime = moment(time).format("HH:mm");
         setTee([teeDate, teeTime])
     }
 
+    const [isUploaded, setIsUploaded] = useState(false)
     const [playerList, setPlayerList] = useState([]);
     const [comment, setComment] = useState("")
 
     useEffect(() => {
         setTeeTimeForModal(slot);
         if (slot !== null) {
-            const uploadedList = [];
             ajaxService(`/slot?slot=${slot}`).then((data) => {
+                const uploadedList = [];
                 data.bookings.forEach((player) => {
                     uploadedList.push({...player, is_new: false});
                 });
@@ -33,9 +34,11 @@ const Modal = ({ handleOnClose, show, slot }) => {
                         is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: ""
                     }]);
                 }
-            }).then();
+            }).then(() => {
+                setIsUploaded(true);
+            });
         }
-    }, [slot])
+    }, [slot, isUploaded])
 
     const handleInputChange = (e, index) => {
         const { name, value } = e.target;
@@ -61,6 +64,7 @@ const Modal = ({ handleOnClose, show, slot }) => {
     const handleClose = () => {
         handleOnClose();
         setPlayerList([])
+        setIsUploaded(false)
     }
 
     const handleOpenEdit = index => {
