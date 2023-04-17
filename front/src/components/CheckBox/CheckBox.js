@@ -21,7 +21,7 @@ const updateInput = (ref, checked) => { // Синхронизация состо
 };
 
 // Рассчитан только на три состояния
-const ThreeStateCheckbox = ({name, checked, disabled}) => {
+const ThreeStateCheckbox = ({name, checked, disabled, onChange}) => {
     const inputRef = React.useRef(FREE_STATE); // Состояние checkbox
     const checkedRef = React.useRef(checked); // Состояние для работы, синхронизируется с inputRef
     React.useEffect(() => { // вызывается, при создании checkbox (задание начального состояния)
@@ -31,6 +31,10 @@ const ThreeStateCheckbox = ({name, checked, disabled}) => {
     const handleClick = () => {
         checkedRef.current = getNextState(checkedRef.current)
         updateInput(inputRef, checkedRef.current);
+
+        if (onChange) {
+            onChange(checkedRef.current);
+        }
     };
     return (
         <label className="form-control">
@@ -39,11 +43,11 @@ const ThreeStateCheckbox = ({name, checked, disabled}) => {
     );
 };
 
-export const CheckBox = ({value = 0, disabled = false}) => {
+export const CheckBox = ({value = 0, disabled = false, onChange = null}) => {
     const [checked] = React.useState(value); // Значение по умолчанию
 
     return (
-        <ThreeStateCheckbox checked={checked} disabled={disabled}/>
+        <ThreeStateCheckbox checked={checked} disabled={disabled} onChange={onChange}/>
     );
 };
 

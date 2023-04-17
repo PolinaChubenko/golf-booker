@@ -5,6 +5,11 @@ import User from "./components/PageUser/User";
 import Admin from "./components/PageAdmin/Admin";
 import CheckBox from "./components/CheckBox/CheckBox";
 
+function handleChange(checkbox_val) {
+    console.log(checkbox_val)
+    // do whatever you want with isChecked value
+}
+
 function App() {
   return (
     <div className="App">
@@ -14,7 +19,7 @@ function App() {
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/checkbox" element={
                     <div>
-                        <CheckBox />
+                        <CheckBox onChange={e => handleChange(e)}/>
                         <CheckBox value={0} disabled={true}/>
                         <CheckBox value={1} disabled={true}/>
                         <CheckBox value={2} disabled={true}/>
