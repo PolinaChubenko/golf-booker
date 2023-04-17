@@ -25,7 +25,7 @@ const Calendar = (props) => {
 
     const handleEvent = (info, successCallback, failureCallback) => {
         ajaxService(`/slot/list?start=${info.startStr.valueOf()}&end=${info.endStr.valueOf()}`).then((data) => {
-            successCallback(data.map((eventEl) => {
+            successCallback(data.result.map((eventEl) => {
                 const start = moment(eventEl['slot']);
                 const end = moment(eventEl['slot']).add(10, "m");
                 return {
@@ -42,14 +42,6 @@ const Calendar = (props) => {
     }
 
     const handleDateClick = (info) => {
-        const start = moment(info.dateStr);
-        const end = moment(info.dateStr).add(10, "m");
-        const new_event = {
-            title: 'NEW',
-            start: start.format("YYYY-MM-DD HH:mm"),
-            end: end.format("YYYY-MM-DD HH:mm")
-        }
-        // setEvents(oldArray => [...oldArray, new_event]);
         showModal(info.dateStr)
     }
 
@@ -83,7 +75,7 @@ const Calendar = (props) => {
                         }}
                         navLinks={true} // can click day/week names to navigate views
                         editable={false} // запрет двигать и менять размер события
-                        selectable={false}
+                        selectable={true}
                         selectMirror={true}
                         dayMaxEvents={true} // allow "more" link when too many events
                         allDaySlot={false} // отключение поля all-day

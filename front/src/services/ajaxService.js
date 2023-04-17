@@ -52,8 +52,8 @@ export function ajaxAuthService(url, params = {}) {
     });
 }
 
-export function ajaxService(url) {
-    return fetch(`${process.env.REACT_APP_API}/api` + url).then((data) => {
+export function ajaxService(url, params = {}) {
+    return fetch(`${process.env.REACT_APP_API}/api` + url, params).then((data) => {
         return data.json();
     });
 }

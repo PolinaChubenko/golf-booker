@@ -23,16 +23,23 @@ const Modal = ({handleOnClose, show, slot}) => {
     useEffect(() => {
         setTeeTimeForModal(slot);
         if (slot !== null) {
+            setPlayerList([]);
             ajaxService(`/slot?slot=${slot}`).then((data) => {
                 const uploadedList = [];
-                data.bookings.forEach((player) => {
-                    uploadedList.push({...player, is_new: false});
-                });
-                setPlayerList(uploadedList);
-                if (playerList.length === 0) {
+                if (data.success === true) {
+                    if (data.result.bookings.length !== 0) {
+                        data.result.bookings.forEach((player) => {
+                            uploadedList.push({...player, is_new: false});
+                        });
+                        setComment(data.result.comment)
+                        setPlayerList(uploadedList);
+                    }
+                }
+                else {
                     setPlayerList([{
                         is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: ""
                     }]);
+                    setComment("")
                 }
             }).then(() => {
                 setIsUploaded(true);
@@ -114,7 +121,7 @@ const Modal = ({handleOnClose, show, slot}) => {
                     <p>Комментарий</p>
                 </div>
                 <div className={style.comment_wrapper}>
-                    <textarea placeholder={"Место для заметок или дополнительной информации"}
+                    <textarea placeholder={"Место для заметок или дополнительной информации"} value={comment}
                               onChange={handleCommentChange}></textarea>
                 </div>
                 <div className={style.btns_wrapper}>

@@ -74,4 +74,7 @@ export const CalendarStyleWrapper = styled.div`
     justify-content: center;
     z-index: 0;
   }
+  .fc-event {
+    cursor: pointer !important;
+  }
 `
