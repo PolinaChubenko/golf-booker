@@ -21,6 +21,7 @@ class Booking(Document):
     surname = fields.StringField()
     phone = fields.StringField()
     email = fields.StringField()
+    hcp = fields.FloatField()
     member = fields.BooleanField()
 
 

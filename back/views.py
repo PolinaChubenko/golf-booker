@@ -32,6 +32,7 @@ def api_slot():
                     "surname": booking.surname,
                     "phone": booking.phone,
                     "email": booking.email,
+                    "hcp": booking.hcp,
                     "member": booking.member
                 }
                 for booking in bookings
@@ -42,6 +43,9 @@ def api_slot():
         data = request.get_json()
         bookings = data["bookings"]
         slot = Slot.find_one({"time": parser.parse(data["slot"])})
+        if len(bookings) != 0 and slot is not None:
+            slot.comment = data["comment"]
+            slot.commit()
         if len(bookings) != 0 and slot is None:
             slot = Slot(time=data["slot"], comment=data["comment"])
             slot.commit()
@@ -55,6 +59,7 @@ def api_slot():
                 surname=b["surname"],
                 phone=b["phone"],
                 email=b["email"],
+                hcp=float(b["hcp"]),
                 member=b["member"]
             )
             booking.commit()
