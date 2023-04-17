@@ -37,7 +37,7 @@ const ThreeStateCheckbox = ({name, checked, onChange}) => {
     );
 };
 
-const CheckBox = () => {
+export const CheckBox = () => {
     const [checked] = React.useState(false); //  Значение по умолчанию null
 
     return (

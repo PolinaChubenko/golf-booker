@@ -1,22 +1,26 @@
 [
   {
-    "title": "Мест нет",
+    "title": "нет",
     "start": "2023-04-10T10:00:00",
-    "end": "2023-04-10T10:10:00"
+    "end": "2023-04-10T10:10:00",
+    "description": "Lorem ipsum sit amet."
   },
   {
     "title": "Мест нет",
     "start": "2023-04-11T10:30:00",
-    "end": "2023-04-11T10:40:00"
+    "end": "2023-04-11T10:40:00",
+    "description": "Favger was here."
   },
   {
     "title": "Мест нет",
     "start": "2023-04-12T11:40:00",
-    "end": "2023-04-12T11:50:00"
+    "end": "2023-04-12T11:50:00",
+    "description": "Ercan abi was here."
   },
   {
     "title": "Мест нет",
     "start": "2023-04-16T09:40:00",
-    "end": "2023-04-16T09:50:00"
+    "end": "2023-04-16T09:50:00",
+    "description": "Me was here."
   }
 ]

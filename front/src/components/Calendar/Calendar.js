@@ -6,84 +6,38 @@ import {useState} from "react";
 import data from '../../test_bd.json';
 import style from "./Calendar.module.css";
 import moment from "moment";
-import styled from "@emotion/styled";
+import { Tooltip } from "bootstrap";
+import { CheckBox } from "../Checkbox/CheckBox"
 
-export const CalendarStyleWrapper = styled.div`
-  .fc-today-button {
-    background: #A7C57A;
-    border-radius: 11px;
-    color: #343A50;
-    border-color: #88B04B3B;
-  }
-
-  .fc-today-button:hover, .fc-button-primary:not(:disabled):active {
-    background: #88B04B;
-    border-color: #88B04B;
-  }
-
-  .fc .fc-button-primary:disabled {
-    background: #D4D0D0;
-    border-color: #D4D0D0;
-  }
-  .fc-next-button, .fc-prev-button, .fc-next-button:hover, .fc-prev-button:hover,
-  .fc-next-button:active, .fc-prev-button:active, .fc-next-button:focus, .fc-prev-button:focus {
-    background-color: transparent !important;
-    border-color: transparent !important;
-    box-shadow: none !important;
-  }
-  .fc-icon-chevron-right, .fc-icon-chevron-left {
-    color: #494C62;
-  }
-  .fc-timeGridWeek-button, .fc-timeGridDay-button {
-    background: #A7C57A !important;
-    border-color: #88B04B !important;
-    border-radius: 18px;
-  }
-  .fc-timeGridWeek-button[aria-pressed=true], .fc-timeGridDay-button[aria-pressed=true] {
-    background: #88B04B !important;
-    border-color: #88B04B !important;
-  }
-  .fc-media-screen {
-    height: 2020px;
-  }
-  .fc-day-grid-container.fc-scroller {
-    height: 100% !important;
-    overflow-y: auto;
-  }
-  .fc-scrollgrid-section-header {
-    background-color: #E4EDD6 !important;
-  }
-  td {
-    height: 35px !important;
-  }
-  .fc-timegrid-event {
-    border-radius: 10px;
-  }
-  .fc-event-title {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-`
+let tooltipInstance = null;
 
 const Calendar = (props) => {
+    const [isModal, setIsModal] = useState(false)
     const [events, setEvents] = useState([])
+    const [eventId, setEventId] = useState(null)
 
     useEffect(() => {
         setEvents(data)
     }, [])
 
+    const showModal = (id) => {
+        setEventId(id)
+        setIsModal(true)
+    };
+    const hideModal = () => {
+        setIsModal(false);
+    };
+
     const handleEvent = (info, successCallback, failureCallback) => {
         successCallback(events)
     }
 
-    const clickEvent = (info) => {
-        console.log("HEEEY")
+    const handleEventClick = (info) => {
+        showModal(info.event.id)
+        // info.event.startStr
     }
 
-    const addEvent = (info) => {
+    const handleDateClick = (info) => {
         const start = moment(info.dateStr);
         const end = moment(info.dateStr).add(10, "m");
         const new_event = {
@@ -92,57 +46,93 @@ const Calendar = (props) => {
             end: end.format("YYYY-MM-DD HH:mm")
         }
         setEvents(oldArray => [...oldArray, new_event]);
+        showModal(null)
     }
 
-    return (
+    const handleMouseEnter = (info) => {
+        let club_mem = "1";
+        let not_club_mem = "2";
+        let free_places = "1";
+        let inner_text =
+            "Список:<br/> "
+            + club_mem + " член клуба <br/> "
+            + not_club_mem + " посетителя <br/> "
+            + free_places + " свобоное место"
+        if (info.event.extendedProps.description) {
+            tooltipInstance = new Tooltip(info.el, {
+                //title: info.event.extendedProps.description,
+                title: inner_text,
+                html: true,
+                container: "body"
+
+            });
+
+            tooltipInstance.show();
+        }
+    };
+
+    const handleMouseLeave = (info) => {
+        if (tooltipInstance) {
+            tooltipInstance.dispose();
+            tooltipInstance = null;
+        }
+    };
+
+
+        return (
         <div>
             <div className={style.calendar}>
                 <div className={style.title}>Бронирование Tee-time</div>
-                <CalendarStyleWrapper>
-                    <FullCalendar
-                        plugins={[timeGridPlugin, interactionPlugin]}
-                        locale="ru"
-                        timeZone="Europe/Moscow"
-                        initialView="timeGridWeek"
-                        nowIndicator={true}
-                        headerToolbar={{
-                            left: 'today prev,next',
-                            center: 'title',
-                            right: 'timeGridWeek,timeGridDay'
-                        }}
-                        navLinks={true} // can click day/week names to navigate views
-                        editable={false} // запрет двигать и менять размер события
-                        selectable={false}
-                        selectMirror={true}
-                        dayMaxEvents={true} // allow "more" link when too many events
-                        allDaySlot={false} // отключение поля all-day
-                        eventDurationEditable={false} // запрет менять размер события
-                        firstDay={1} // начало недели - понедельник
+                <FullCalendar
+                    plugins={[timeGridPlugin, interactionPlugin]}
+                    locale="ru"
+                    timeZone="Europe/Moscow"
+                    initialView="timeGridWeek"
+                    nowIndicator={true}
+                    headerToolbar={{
+                        left: 'today prev,next',
+                        center: 'title',
+                        right: 'timeGridWeek,timeGridDay'
+                    }}
+                    navLinks={true} // can click day/week names to navigate views
+                    editable={false} // запрет двигать и менять размер события
+                    selectable={false}
+                    selectMirror={true}
+                    dayMaxEvents={true} // allow "more" link when too many events
+                    allDaySlot={false} // отключение поля all-day
+                    eventDurationEditable={false} // запрет менять размер события
+                    firstDay={1} // начало недели - понедельник
 
-                        slotDuration='00:10:00'
-                        slotLabelInterval={10}
-                        slotMinTime='09:00:00'
-                        slotMaxTime='18:10:00'
+                    slotDuration='00:10:00'
+                    slotLabelInterval={10}
+                    slotLabelFormat={{
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        omitZeroMinute: false,
+                        meridiem: 'short',
+                    }}
+                    slotMinTime='09:00:00'
+                    slotMaxTime='18:10:00'
 
-                        buttonText={{
-                            today: 'Сегодня',
-                            month: 'Месяц',
-                            week: 'Неделя',
-                            day: 'День',
-                            list: 'Список'
-                        }}
+                    buttonText={{
+                        today: 'Сегодня',
+                        month: 'Месяц',
+                        week: 'Неделя',
+                        day: 'День',
+                        list: 'Список'
+                    }}
 
-                        events={handleEvent}
-                        eventColor={'#ABABAB'}
-                        eventTextColor={'#494C62'}
-                        displayEventTime={false}
-                        eventClick={clickEvent}
-                        dateClick={props.is_admin ? addEvent : null}
-                    />
-                </CalendarStyleWrapper>
+                    eventTextColor={'#494C62'}
+                    displayEventTime={false}
+                    eventClick={props.is_admin ? handleEventClick : null}
+                    dateClick={props.is_admin ? handleDateClick : null}
+                    eventMouseEnter={handleMouseEnter}
+                    //eventMouseLeave={handleMouseLeave}
+                    events={handleEvent}
+                />
             </div>
         </div>
-    )
+    );
 }
 
 export default Calendar;
