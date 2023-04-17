@@ -16,7 +16,7 @@ def api_slot():
                 "success": False,
                 "reason": "'slot' property is not specified"
             })
-        slot = Slot.find_one({"time": request.args["slot"]})
+        slot = Slot.find_one({"time": parser.parse(request.args["slot"])})
         if slot is None:
             return json.dumps({
                 "success": False,
