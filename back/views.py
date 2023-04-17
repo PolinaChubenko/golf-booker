@@ -8,7 +8,7 @@ from app import app
 from models import Slot, Booking
 
 
-@app.route("/api/slot", methods=["GET"])
+@app.route("/api/slot", methods=["GET", "POST"])
 def api_slot():
     if request.method == "GET":
         if "slot" not in request.args:
