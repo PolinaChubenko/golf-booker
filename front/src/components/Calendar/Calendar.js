@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid' // a plugin!
 import interactionPlugin from '@fullcalendar/interaction';
@@ -68,8 +68,7 @@ const Calendar = (props) => {
             trigger: "hover",
             container: "body",
             offset: ",5",
-            customClass: style.tooltip,
-            template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>'
+            customClass: style.tooltip
         });
         tooltipInstance.show();
     };
