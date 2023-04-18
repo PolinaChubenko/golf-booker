@@ -9,7 +9,7 @@ const PlayerSection = ({index, player, handleOpenEdit, handleRemove}) => {
         <div className={style.player_section_wrapper}>
             <div className={style.member_wrapper}>
                 Член клуба:
-                <CheckBox value={player.member ? 1 : 2}/>
+                <CheckBox value={player.member ? 1 : 2} disabled={true}/>
             </div>
             <div className={style.player_info}>{player.name + " " + player.surname}</div>
             <div className={style.player_info}>{player.phone}</div>
