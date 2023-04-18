@@ -1,14 +1,15 @@
 import json
+
+import flask_praetorian
 from dateutil import parser
-
 from flask import request
-from flask_cors import cross_origin
 
-from app import app
+from app import app, guard
 from models import Slot, Booking
 
 
 @app.route("/api/slot", methods=["GET", "POST"])
+@flask_praetorian.auth_required
 def api_slot():
     if request.method == "GET":
         if "slot" not in request.args:
@@ -103,3 +104,23 @@ def api_slot_list():
         "success": True,
         "result": response
     })
+
+
+@app.route("/api/token", methods=["POST"])
+def token():
+    req = request.get_json(force=True)
+    username = req.get('username', "default")
+    password = req.get('password', None)
+    user = guard.authenticate(username, password)
+    token = guard.encode_jwt_token(user)
+    ret = {"access": token, "refresh": token}
+    return ret, 200
+
+
+@app.route("/api/token/refresh", methods=["POST"])
+def refresh():
+    print("refresh request")
+    old_token = request.get_json().get("refresh", None)
+    new_token = guard.refresh_jwt_token(old_token)
+    ret = {"access": new_token}
+    return ret, 200
