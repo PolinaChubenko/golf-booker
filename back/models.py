@@ -35,7 +35,7 @@ class User(Document):
 
     @property
     def identity(self):
-        return self.id
+        return str(self.id)
 
     @property
     def rolenames(self):
