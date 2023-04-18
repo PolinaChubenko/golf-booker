@@ -52,7 +52,6 @@ const Modal = ({handleOnClose, show, slot}) => {
         setError('')
         const list = [...playerList];
         if (e === 0 || e === 1 || e === 2) {
-            console.log(e === 1)
             list[index]['member'] = (e === 1);
         } else {
             const { name, value } = e.target;
@@ -110,7 +109,6 @@ const Modal = ({handleOnClose, show, slot}) => {
                 return;
             }
         }
-        console.log("no error")
         ajaxService(`/slot`, {
             method: 'POST',
             body: JSON.stringify({slot: slot, bookings: playerList, comment: comment}),
