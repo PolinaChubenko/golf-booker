@@ -9,6 +9,7 @@ const SectionController = ({playerList, handleInputChange, handleOpenEdit, handl
             if (player.is_new) {
                 return (
                     <InputSection
+                        key={index}
                         handleInputChange={handleInputChange}
                         handleRemove={handleRemove}
                         player={player}
@@ -18,7 +19,9 @@ const SectionController = ({playerList, handleInputChange, handleOpenEdit, handl
             } else {
                 return (
                     <PlayerSection
+                        key={index}
                         handleOpenEdit={handleOpenEdit}
+                        handleRemove={handleRemove}
                         player={player}
                         index={index}
                     />
