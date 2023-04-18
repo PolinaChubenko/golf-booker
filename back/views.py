@@ -106,7 +106,7 @@ def api_slot_list():
     })
 
 
-@app.route("/api/token")
+@app.route("/api/token", methods=["POST"])
 def token():
     req = request.get_json(force=True)
     username = req.get('username', "default")
@@ -117,7 +117,7 @@ def token():
     return ret, 200
 
 
-@app.route("/api/token/refresh")
+@app.route("/api/token/refresh", methods=["POST"])
 def refresh():
     print("refresh request")
     old_token = request.get_json().get("refresh", None)
