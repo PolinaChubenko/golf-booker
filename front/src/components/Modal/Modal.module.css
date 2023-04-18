@@ -123,3 +123,9 @@
 .btns_wrapper button {
     margin: auto;
 }
+
+.error {
+    color: red;
+    font-family: 'Manrope', serif;
+    font-size: 12px;
+}
