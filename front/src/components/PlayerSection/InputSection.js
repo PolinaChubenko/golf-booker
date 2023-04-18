@@ -6,8 +6,9 @@ import CheckBox from "../CheckBox/CheckBox";
 const InputSection = ({index, player, handleInputChange, handleRemove}) => {
     return (
         <div className={style.input_section_wrapper}>
-            <div>
-                <CheckBox value={0}/>
+            <div className={style.member_wrapper}>
+                Член клуба:
+                <CheckBox value={0} onChange={e => handleInputChange(e, index)}/>
             </div>
             <div>
                 <input name={"name"} placeholder={"Имя"} value={player.name}
@@ -26,7 +27,7 @@ const InputSection = ({index, player, handleInputChange, handleRemove}) => {
             <div></div>
             <div className={style.icons_wrapper}>
                 <div></div>
-                <div><Paste className={style.icon}></Paste></div>
+                <div>{/*<Paste className={style.icon}></Paste>*/}</div>
                 <div><Cross className={style.icon} onClick={() => handleRemove(index)}></Cross></div>
             </div>
         </div>

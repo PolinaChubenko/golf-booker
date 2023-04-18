@@ -18,6 +18,7 @@ const Modal = ({handleOnClose, show, slot}) => {
 
     const [isUploaded, setIsUploaded] = useState(false)
     const [playerList, setPlayerList] = useState([]);
+    const [error, setError] = useState('');
     const [comment, setComment] = useState("")
 
     useEffect(() => {
@@ -48,9 +49,14 @@ const Modal = ({handleOnClose, show, slot}) => {
     }, [slot, isUploaded])
 
     const handleInputChange = (e, index) => {
-        const { name, value } = e.target;
+        setError('')
         const list = [...playerList];
-        list[index][name] = value;
+        if (e === 0 || e === 1 || e === 2) {
+            list[index]['member'] = (e === 1);
+        } else {
+            const { name, value } = e.target;
+            list[index][name] = value;
+        }
         setPlayerList(list);
     };
 
@@ -69,6 +75,7 @@ const Modal = ({handleOnClose, show, slot}) => {
     };
 
     const handleClose = () => {
+        setError('')
         handleOnClose();
         setPlayerList([])
         setIsUploaded(false)
@@ -88,6 +95,20 @@ const Modal = ({handleOnClose, show, slot}) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (playerList.length === 0) {
+            setError("Никто не был добавлен в слот")
+            return
+        }
+        if (playerList.length > 0) {
+            playerList.map((player) => {
+                if (!player.name || !player.surname || !player.phone || !player.member) {
+                    setError("Не заполнены важные поля: имя, фамилия, номер телефона, член клуба")
+                }
+            })
+            if (error) {
+                return;
+            }
+        }
         ajaxService(`/slot`, {
             method: 'POST',
             body: JSON.stringify({slot: slot, bookings: playerList, comment: comment}),
@@ -124,6 +145,7 @@ const Modal = ({handleOnClose, show, slot}) => {
                     <textarea placeholder={"Место для заметок или дополнительной информации"} value={comment}
                               onChange={handleCommentChange}></textarea>
                 </div>
+                <div className={style.error}>{error}</div>
                 <div className={style.btns_wrapper}>
                     <button type="button" className={[style.btn, style.red_color].join(" ")} onClick={handleClose}>
                         Отменить

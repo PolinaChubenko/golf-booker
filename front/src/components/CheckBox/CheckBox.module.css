@@ -10,7 +10,7 @@
     position: relative;
     height: 40px !important;
     width: 40px !important;
-
+    cursor: pointer;
 }
 
 .checkbox:after {
@@ -27,7 +27,7 @@
 .checkbox:checked:after {
     content: '\2714';
     color: #494C62;
-    font-size: 2rem !important;
+    font-size: 35px !important;
     position: absolute;
     top: 5.5px;
     left: 7px;
@@ -40,10 +40,10 @@
 .checkbox:indeterminate:after {
     content: '\2715';
     color: #494C62;
-    font-size: 2rem !important;
+    font-size: 35px !important;
     position: absolute;
     top: 4.7px;
-    left: 8px;
+    left: 5px;
 }
 
 .checkbox:indeterminate {
