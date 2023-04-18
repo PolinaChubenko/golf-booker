@@ -8,7 +8,7 @@ import Footer from "../Footer/Footer";
 
 
 const Admin = () => {
-    const [isAdmin, setIsAdmin] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         if (isLogin()) {
