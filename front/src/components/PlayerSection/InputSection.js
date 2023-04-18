@@ -1,11 +1,13 @@
 import style from "./PlayerSection.module.css"
 import {ReactComponent as Cross} from "./../../icons/Cross.svg";
 import {ReactComponent as Paste} from "./../../icons/Paste.svg";
+import CheckBox from "../CheckBox/CheckBox";
 
 const InputSection = ({index, player, handleInputChange, handleRemove}) => {
     return (
         <div className={style.input_section_wrapper}>
             <div>
+                <CheckBox value={0}/>
             </div>
             <div>
                 <input name={"name"} placeholder={"Имя"} value={player.name}
