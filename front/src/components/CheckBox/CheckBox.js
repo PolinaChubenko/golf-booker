@@ -1,4 +1,4 @@
-import React from 'react';
+import {useEffect, useRef, useState} from 'react';
 import style from "./CheckBox.module.css";
 
 const FREE_STATE = 0 // свободно (пусто)
@@ -22,12 +22,14 @@ const updateInput = (ref, checked) => { // Синхронизация состо
 
 // Рассчитан только на три состояния
 const ThreeStateCheckbox = ({name, checked, disabled, onChange}) => {
-    const inputRef = React.useRef(FREE_STATE); // Состояние checkbox
-    const checkedRef = React.useRef(checked); // Состояние для работы, синхронизируется с inputRef
-    React.useEffect(() => { // вызывается, при создании checkbox (задание начального состояния)
+    const inputRef = useRef(FREE_STATE); // Состояние checkbox
+    const checkedRef = useRef(checked); // Состояние для работы, синхронизируется с inputRef
+
+    useEffect(() => { // вызывается, при создании checkbox (задание начального состояния)
         checkedRef.current = checked;
         updateInput(inputRef, checked);
     }, [checked]);
+
     const handleClick = () => {
         checkedRef.current = getNextState(checkedRef.current)
         updateInput(inputRef, checkedRef.current);
@@ -42,7 +44,7 @@ const ThreeStateCheckbox = ({name, checked, disabled, onChange}) => {
 };
 
 export const CheckBox = ({value = 0, disabled = false, onChange = null}) => {
-    const [checked] = React.useState(value); // Значение по умолчанию
+    const [checked] = useState(value); // Значение по умолчанию
 
     return (
         <ThreeStateCheckbox checked={checked} disabled={disabled} onChange={onChange}/>
