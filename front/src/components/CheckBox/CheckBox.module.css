@@ -1,0 +1,54 @@
+
+
+.checkbox {
+    -webkit-appearance: none;
+    border: 0 solid #cacece !important;
+    padding: 0;
+    border-radius: 7px !important;
+    display: inline-block;
+
+    position: relative;
+    height: 40px !important;
+    width: 40px !important;
+
+}
+
+.checkbox:after {
+}
+
+.checkbox:not(:checked):not(:indeterminate):after {
+    content: '';
+}
+
+.checkbox:not(:checked):not(:indeterminate) {
+    background-color: #C3D7A5 !important;
+}
+
+.checkbox:checked:after {
+    content: '\2714';
+    color: #494C62;
+    font-size: 2rem !important;
+    position: absolute;
+    top: 5.5px;
+    left: 7px;
+}
+
+.checkbox:checked {
+    background-color: #D9D9D9 !important;
+}
+
+.checkbox:indeterminate:after {
+    content: '\2715';
+    color: #494C62;
+    font-size: 2rem !important;
+    position: absolute;
+    top: 4.7px;
+    left: 8px;
+}
+
+.checkbox:indeterminate {
+    background-color: #D9D9D9 !important;
+}
+
+.checkbox:disabled {
+}
