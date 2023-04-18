@@ -8,7 +8,7 @@ const InputSection = ({index, player, handleInputChange, handleRemove}) => {
         <div className={style.input_section_wrapper}>
             <div className={style.member_wrapper}>
                 Член клуба:
-                <CheckBox value={0}/>
+                <CheckBox value={0} onChange={e => handleInputChange(e, index)}/>
             </div>
             <div>
                 <input name={"name"} placeholder={"Имя"} value={player.name}
