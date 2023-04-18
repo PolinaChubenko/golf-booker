@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid' // a plugin!
 import interactionPlugin from '@fullcalendar/interaction';
@@ -8,6 +8,7 @@ import moment from "moment";
 import Modal from "../Modal/Modal.js";
 import {CalendarStyleWrapper} from "./StylingCalendar";
 import {ajaxService} from "../../services/ajaxService";
+import { Tooltip } from "bootstrap";
 
 
 const Calendar = (props) => {
@@ -55,6 +56,30 @@ const Calendar = (props) => {
         }
     }
 
+    let tooltipInstance = null;
+
+    const handleMouseEnter = (info) => {
+        const member_amt = 1
+        const guest_amt = 0
+        tooltipInstance = new Tooltip(info.el, {
+            title: `В этом слоте: члены клуба -- ${member_amt} гости -- ${guest_amt}`,
+            html: true,
+            placement: "right",
+            trigger: "hover",
+            container: "body",
+            offset: ",5",
+            customClass: style.tooltip
+        });
+        tooltipInstance.show();
+    };
+
+    const handleMouseLeave = (info) => {
+        if (tooltipInstance) {
+            tooltipInstance.dispose();
+            tooltipInstance = null;
+        }
+    };
+
     return (
         <div>
             <Modal show={isModal} handleOnClose={hideModal} slot={slot}></Modal>
@@ -74,7 +99,7 @@ const Calendar = (props) => {
                         }}
                         navLinks={true} // can click day/week names to navigate views
                         editable={false} // запрет двигать и менять размер события
-                        selectable={true}
+                        selectable={props.is_admin ? true : null}
                         selectMirror={true}
                         dayMaxEvents={true} // allow "more" link when too many events
                         allDaySlot={false} // отключение поля all-day
@@ -106,6 +131,8 @@ const Calendar = (props) => {
                         eventClick={props.is_admin ? handleEventClick : null}
                         dateClick={props.is_admin ? handleDateClick : null}
                         eventDidMount={handleEventDidMount}
+                        eventMouseEnter={props.is_admin ? null : handleMouseEnter}
+                        eventMouseLeave={props.is_admin ? null : handleMouseLeave}
                     />
                 </CalendarStyleWrapper>
             </div>

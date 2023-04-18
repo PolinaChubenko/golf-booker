@@ -4,6 +4,11 @@
     cursor: pointer;
 }
 
+.icon:hover > path {
+    fill: #7a9e43;
+    fill-opacity: 0.8;
+}
+
 .icons_wrapper {
     margin-left: 30%;
     display: grid;
@@ -47,6 +52,7 @@
 
     display: grid;
     grid-template-columns: 1fr 4fr 4fr 1fr 2fr;
+    /*grid-template-columns: 3fr 3.5fr 3.5fr 0fr 2fr;*/
 }
 
 .input_section_wrapper input {
@@ -61,5 +67,18 @@
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
+}
+
+.member_wrapper {
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 150%;
+    width: -moz-fit-content;
+    width: fit-content;
+    margin-left: 3%;
+    margin-top: 1%;
+    text-transform: none;
 }
 

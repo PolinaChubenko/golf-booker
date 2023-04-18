@@ -1,11 +1,14 @@
 import style from "./PlayerSection.module.css"
 import {ReactComponent as Cross} from "./../../icons/Cross.svg";
 import {ReactComponent as Paste} from "./../../icons/Paste.svg";
+import CheckBox from "../CheckBox/CheckBox";
 
 const InputSection = ({index, player, handleInputChange, handleRemove}) => {
     return (
         <div className={style.input_section_wrapper}>
-            <div>
+            <div className={style.member_wrapper}>
+                Член клуба:
+                <CheckBox value={0} onChange={e => handleInputChange(e, index)}/>
             </div>
             <div>
                 <input name={"name"} placeholder={"Имя"} value={player.name}
@@ -24,7 +27,7 @@ const InputSection = ({index, player, handleInputChange, handleRemove}) => {
             <div></div>
             <div className={style.icons_wrapper}>
                 <div></div>
-                <div><Paste className={style.icon}></Paste></div>
+                <div>{/*<Paste className={style.icon}></Paste>*/}</div>
                 <div><Cross className={style.icon} onClick={() => handleRemove(index)}></Cross></div>
             </div>
         </div>
