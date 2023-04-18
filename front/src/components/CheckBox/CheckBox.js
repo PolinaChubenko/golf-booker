@@ -37,9 +37,7 @@ const ThreeStateCheckbox = ({name, checked, disabled, onChange}) => {
         }
     };
     return (
-        <div className="form-control">
-            <input ref={inputRef} type="checkbox" className={style.checkbox} name={name} onClick={handleClick} disabled={disabled}/>
-        </div>
+        <input ref={inputRef} type="checkbox" className={style.checkbox} name={name} onClick={handleClick} disabled={disabled}/>
     );
 };
 

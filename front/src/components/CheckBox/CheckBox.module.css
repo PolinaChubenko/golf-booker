@@ -1,6 +1,4 @@
 
-.form-control {
-}
 
 .checkbox {
     -webkit-appearance: none;
@@ -16,9 +14,6 @@
 }
 
 .checkbox:after {
-    position: absolute;
-    top: 4.7px;
-    left: 8px;
 }
 
 .checkbox:not(:checked):not(:indeterminate):after {
@@ -33,6 +28,9 @@
     content: '\2714';
     color: #494C62;
     font-size: 2rem !important;
+    position: absolute;
+    top: 5.5px;
+    left: 7px;
 }
 
 .checkbox:checked {
@@ -43,6 +41,9 @@
     content: '\2715';
     color: #494C62;
     font-size: 2rem !important;
+    position: absolute;
+    top: 4.7px;
+    left: 8px;
 }
 
 .checkbox:indeterminate {
