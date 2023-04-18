@@ -48,10 +48,16 @@ const Modal = ({handleOnClose, show, slot}) => {
     }, [slot, isUploaded])
 
     const handleInputChange = (e, index) => {
-        const { name, value } = e.target;
-        const list = [...playerList];
-        list[index][name] = value;
-        setPlayerList(list);
+        if (e === 0 || e === 1 || e === 2) {
+            const list = [...playerList];
+            list[index]['member'] = (e === 1);
+            setPlayerList(list);
+        } else {
+            const { name, value } = e.target;
+            const list = [...playerList];
+            list[index][name] = value;
+            setPlayerList(list);
+        }
     };
 
     const handleAddClick = () => {
