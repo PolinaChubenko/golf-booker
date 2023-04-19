@@ -49,6 +49,13 @@ body {
     color: #FFFFFF;
 }
 
+.logo_icon {
+    height: 50px;
+    width: 50px;
+    margin-left: 5%;
+    margin-right: 2%;
+}
+
 .icon {
     width: 50px;
     height: 60%;
