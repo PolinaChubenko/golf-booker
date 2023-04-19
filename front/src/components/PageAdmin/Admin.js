@@ -8,22 +8,16 @@ import Footer from "../Footer/Footer";
 
 
 const Admin = () => {
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    useEffect(() => {
-        if (isLogin()) {
-            setIsAdmin(true);
-        }
-    }, []);
+    const [isAdmin, setIsAdmin] = useState(isLogin());
 
     return (
         <div>
-            <Header/>
+            <Header isAdminAuth={isAdmin}/>
             {isAdmin ?
                 <div className={style.calendar_wrapper}>
                     <Calendar is_admin={true}/>
                 </div>
-                : <AuthForm/>
+                : <AuthForm setIsAdmin={setIsAdmin}/>
             }
             <Footer/>
         </div>

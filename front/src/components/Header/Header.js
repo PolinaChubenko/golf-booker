@@ -1,17 +1,20 @@
 import style from "./Header.module.css";
 import {Link} from "react-router-dom";
 import {ReactComponent as Logout} from "./../../icons/Logout.svg";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {isLogin} from "../../utils/isLogin";
 
-const Header = () => {
-
+const Header = ({isAdminAuth}) => {
     const [isAdmin, setIsAdmin] = useState(isLogin())
 
-    function onLogout() {
+    useEffect(() => {
         setIsAdmin(isLogin())
+    }, [isAdminAuth])
+
+    function onLogout() {
         window.localStorage.setItem('ACCESS', '');
         window.localStorage.setItem('REFRESH', '');
+        setIsAdmin(false)
     }
 
     return (

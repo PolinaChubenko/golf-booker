@@ -16,7 +16,7 @@ const PlayerSection = ({index, player, handleOpenEdit, handleRemove}) => {
                 <div className={style.handicap}>{player.hcp}</div>
             </div>
             <div className={style.icons_wrapper}>
-                <div><Copy className={style.icon}/></div>
+                <div>{/*<Copy className={style.icon}/>*/}</div>
                 <div><Edit className={style.icon} onClick={() => handleOpenEdit(index)}/></div>
                 <div><Cross className={style.icon} onClick={() => handleRemove(index)}></Cross></div>
             </div>

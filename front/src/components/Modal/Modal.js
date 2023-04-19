@@ -95,10 +95,6 @@ const Modal = ({handleOnClose, show, slot}) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (playerList.length === 0) {
-            setError("Никто не был добавлен в слот")
-            return
-        }
         if (playerList.length > 0) {
             playerList.map((player) => {
                 if (!player.name || !player.surname || !player.phone || !player.member) {
