@@ -38,6 +38,7 @@ fieldset {
     text-align: center;
     margin: auto;
     border-color: #88B04B;
+    cursor: pointer;
 }
 
 .error {

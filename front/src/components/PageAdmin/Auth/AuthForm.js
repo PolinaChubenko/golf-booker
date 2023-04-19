@@ -1,13 +1,11 @@
 import {ajaxAuthService} from "../../../services/ajaxService";
 import InputBlock from "../../InputBlock/InputBlock";
-import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import style from "./AuthForm.module.css";
 
-const AuthForm = () => {
+const AuthForm = ({setIsAdmin}) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -15,7 +13,7 @@ const AuthForm = () => {
             setError('введите пароль');
             return;
         }
-        ajaxAuthService('/token/', {
+        ajaxAuthService('/token', {
             method: 'POST',
             body: JSON.stringify({ password: password }),
             headers: {
@@ -25,7 +23,7 @@ const AuthForm = () => {
             window.localStorage.setItem("ACCESS", data.access);
             window.localStorage.setItem("REFRESH", data.refresh);
         }).then(() => {
-            navigate(`/admin`, {replace: true});
+            setIsAdmin(true)
         }).catch(() => {
             setError("неверные данные")
         });
