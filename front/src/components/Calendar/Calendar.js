@@ -23,13 +23,21 @@ const Calendar = (props) => {
         setIsModal(false);
     };
 
+    const parseEventTitle = (title) => {
+        if (title === 4) {
+            return "Мест нет"
+        } else {
+            return title + "/4 мест занято";
+        }
+    }
+
     const handleEvent = (info, successCallback, failureCallback) => {
         ajaxService(`/slot/list?start=${info.startStr.valueOf()}&end=${info.endStr.valueOf()}`).then((data) => {
             successCallback(data.result.map((eventEl) => {
                 const start = moment(eventEl['slot']);
                 const end = moment(eventEl['slot']).add(10, "m");
                 return {
-                    title: eventEl['participants'],
+                    title: parseEventTitle(eventEl['participants']),
                     start: start.format("YYYY-MM-DD HH:mm"),
                     end: end.format("YYYY-MM-DD HH:mm")
                 }
