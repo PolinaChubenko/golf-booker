@@ -27,19 +27,19 @@ def api_slot():
         response = {
             "success": True,
             "result": {
-            "time": str(slot.time),
-            "comment": slot.comment,
-            "bookings": [
-                {
-                    "name": booking.name,
-                    "surname": booking.surname,
-                    "phone": booking.phone,
-                    "email": booking.email,
-                    "hcp": booking.hcp,
-                    "member": booking.member
-                }
-                for booking in bookings
-            ]
+                "time": str(slot.time),
+                "comment": slot.comment,
+                "bookings": [
+                    {
+                        "name": booking.name,
+                        "surname": booking.surname,
+                        "phone": booking.phone,
+                        "email": booking.email,
+                        "hcp": booking.hcp,
+                        "member": booking.member
+                    }
+                    for booking in bookings
+                ]
             }
         }
         return json.dumps(response)
@@ -57,6 +57,10 @@ def api_slot():
         for b in old_bookings:
             b.delete()
         for b in bookings:
+            try:
+                hcp = float(b["hcp"])
+            except:
+                hcp = None
             booking = Booking(
                 slot=slot,
                 name=b["name"],
