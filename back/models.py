@@ -22,7 +22,7 @@ class Booking(Document):
     surname = fields.StringField()
     phone = fields.StringField()
     email = fields.StringField()
-    hcp = fields.FloatField()
+    hcp = fields.FloatField(allow_none=True, default=None)
     member = fields.BooleanField()
 
 
