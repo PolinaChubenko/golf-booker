@@ -8,7 +8,7 @@ from app import app, guard
 from models import Slot, Booking
 
 
-@app.route("/api/slot", methods=["GET", "POST"])
+@app.route("/slot", methods=["GET", "POST"])
 @flask_praetorian.auth_required
 def api_slot():
     if request.method == "GET":
@@ -78,7 +78,7 @@ def api_slot():
         })
 
 
-@app.route("/api/slot/list", methods=["GET"])
+@app.route("/slot/list", methods=["GET"])
 def api_slot_list():
     if "start" not in request.args or "end" not in request.args:
         return json.dumps({
@@ -110,7 +110,7 @@ def api_slot_list():
     })
 
 
-@app.route("/api/token", methods=["POST"])
+@app.route("/token", methods=["POST"])
 def token():
     req = request.get_json(force=True)
     username = req.get('username', "default")
@@ -121,7 +121,7 @@ def token():
     return ret, 200
 
 
-@app.route("/api/token/refresh", methods=["POST"])
+@app.route("/token/refresh", methods=["POST"])
 def refresh():
     print("refresh request")
     old_token = request.get_json().get("refresh", None)
