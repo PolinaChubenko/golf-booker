@@ -8,7 +8,7 @@ export function ajaxService(url, params = {}) {
 
     return fetch(`${process.env.REACT_APP_API}/api` + url, newParams).then((data) => {
         if (data.status === 401 && window.localStorage.getItem('REFRESH')) {
-            ajaxAuthService('/token/refresh/', {
+            ajaxAuthService('/token/refresh', {
                 method: 'POST',
                 body: JSON.stringify({ refresh: window.localStorage.getItem('REFRESH') }),
                 headers: {
