@@ -97,8 +97,8 @@ const Modal = ({handleOnClose, show, slot}) => {
         event.preventDefault();
         if (playerList.length > 0) {
             playerList.map((player) => {
-                if (!player.name || !player.surname || !player.phone || !player.member) {
-                    setError("Не заполнены важные поля: имя, фамилия, номер телефона, член клуба")
+                if (!player.name) {
+                    setError("Поле имя - обязательно к заполнению")
                 }
             })
             if (error) {
