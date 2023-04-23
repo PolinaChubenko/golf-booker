@@ -41,7 +41,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./front:/usr/src/app
-      - /var/www/html/golf_front:/usr/src/app/build
+    ports:
+      - "5001:80"
     depends_on:
       - api
 
