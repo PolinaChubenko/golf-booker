@@ -9,4 +9,4 @@ COPY . /usr/src/app
 
 EXPOSE 5000
 
-CMD [ "gunicorn", "-w", "4", "--bind", "0.0.0.0:5000", "wsgi"]
+CMD ["gunicorn", "-w", "4", "--bind", "0.0.0.0:5000", "wsgi"]

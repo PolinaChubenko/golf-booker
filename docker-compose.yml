@@ -2,16 +2,31 @@ version: '3.7'
 
 services:
   api:
-    image: "${API_IMAGE}"
+    build:
+      context: back
+      dockerfile: Dockerfile
+    image: golfbooker/flask-python
     container_name: api
     restart: unless-stopped
-    ports:
-      - 5000
+    volumes:
+      - back_volume:/usr/src/app
+    depends_on:
+      - mongodb
+    networks:
+      - backend
+
+  mongodb:
+    image: mongo:4.0.8
+    container_name: mongodb
+    restart: unless-stopped
+    command: mongod
     environment:
-      - FLASK_ENV=production
-      - APP_SETTINGS=project.config.ProductionConfig
-      - DATABASE_URL=${DATABASE_URL}
-      - SECRET_KEY=${SECRET_KEY}
+      MONGODB_DATA_DIR: /data/db
+      MONGODB_LOG_DIR: /dev/null
+    volumes:
+      - mongodb_volume:/data/db
+    networks:
+      - backend
 
   nginx:
     image: linuxserver/letsencrypt
@@ -36,7 +51,7 @@ services:
       - client
 
   client:
-    image: "${CLIENT_IMAGE}"
+    image: golfbooker/react
     container_name: client
     restart: unless-stopped
     ports:
@@ -44,80 +59,14 @@ services:
     depends_on:
       - api
 
-version: '3'
-services:
-
-  flask:
-    build:
-      context: app
-      dockerfile: Dockerfile
-    container_name: flask
-    image: digitalocean.com/flask-python:3.6
-    restart: unless-stopped
-    environment:
-      APP_ENV: "prod"
-      APP_DEBUG: "False"
-      APP_PORT: 5000
-      MONGODB_DATABASE: flaskdb
-      MONGODB_USERNAME: flaskuser
-      MONGODB_PASSWORD: your_mongodb_password
-      MONGODB_HOSTNAME: mongodb
-    volumes:
-      - appdata:/var/www
-    depends_on:
-      - mongodb
-    networks:
-      - frontend
-      - backend
-
-  mongodb:
-    image: mongo:4.0.8
-    container_name: mongodb
-    restart: unless-stopped
-    command: mongod --auth
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: mongodbuser
-      MONGO_INITDB_ROOT_PASSWORD: your_mongodb_root_password
-      MONGO_INITDB_DATABASE: flaskdb
-      MONGODB_DATA_DIR: /data/db
-      MONDODB_LOG_DIR: /dev/null
-    volumes:
-      - mongodbdata:/data/db
-    networks:
-      - backend
-
-  webserver:
-    build:
-      context: nginx
-      dockerfile: Dockerfile
-    image: digitalocean.com/webserver:latest
-    container_name: webserver
-    restart: unless-stopped
-    environment:
-      APP_ENV: "prod"
-      APP_NAME: "webserver"
-      APP_DEBUG: "true"
-      SERVICE_NAME: "webserver"
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - nginxdata:/var/log/nginx
-    depends_on:
-      - flask
-    networks:
-      - frontend
+volumes:
+  back_volume:
+    driver: local
+  mongodb_volume:
+    driver: local
 
 networks:
   frontend:
     driver: bridge
   backend:
     driver: bridge
-
-volumes:
-  mongodbdata:
-    driver: local
-  appdata:
-    driver: local
-  nginxdata:
-    driver: local
