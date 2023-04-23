@@ -6,14 +6,16 @@ services:
       context: back
       dockerfile: Dockerfile
     image: golfbooker/flask-python
-    container_name: api
+    container_name: api_dev
     restart: unless-stopped
     volumes:
-      - back_volume:/usr/src/app
+      - ./back:/usr/src/app
     depends_on:
       - mongodb
     networks:
       - backend
+    ports:
+      - "5000:5000"
 
   mongodb:
     image: mongo:4.0.8
@@ -24,49 +26,23 @@ services:
       MONGODB_DATA_DIR: /data/db
       MONGODB_LOG_DIR: /dev/null
     volumes:
-      - mongodb_volume:/data/db
+      - ./mongodb:/data/db
     networks:
       - backend
 
-  nginx:
-    image: linuxserver/letsencrypt
-    container_name: nginx
-    ports:
-      - 80:80
-      - 443:443
-    restart: unless-stopped
-    volumes:
-      - ./nginx.conf:/config/nginx/nginx.conf
-      - ./prod.conf:/config/nginx/site-confs/default
-    environment:
-      - PUID=1050
-      - PGID=1050
-      - EMAIL=${LETSENCRYPT_EMAIL}
-      - URL=martinlabs.tech
-      - SUBDOMAINS=${SUBDOMAIN}
-      - ONLY_SUBDOMAINS=true
-      - TZ=Australia/Melboure
-    depends_on:
-      - api
-      - client
-
   client:
+    build:
+      context: front
+      dockerfile: Dockerfile
     image: golfbooker/react
     container_name: client
     restart: unless-stopped
-    ports:
-      - 3000
+    volumes:
+      - ./front:/usr/src/app
+      - /var/www/html/golf_front:/usr/src/app/build
     depends_on:
       - api
 
-volumes:
-  back_volume:
-    driver: local
-  mongodb_volume:
-    driver: local
-
 networks:
-  frontend:
-    driver: bridge
   backend:
     driver: bridge
