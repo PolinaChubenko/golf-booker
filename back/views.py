@@ -67,7 +67,7 @@ def api_slot():
                 surname=b["surname"],
                 phone=b["phone"],
                 email=b["email"],
-                hcp=float(b["hcp"]),
+                hcp=hcp,
                 member=b["member"]
             )
             booking.commit()
