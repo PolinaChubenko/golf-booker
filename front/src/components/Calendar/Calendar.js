@@ -39,7 +39,11 @@ const Calendar = (props) => {
                 return {
                     title: parseEventTitle(eventEl['participants']),
                     start: start.format("YYYY-MM-DD HH:mm"),
-                    end: end.format("YYYY-MM-DD HH:mm")
+                    end: end.format("YYYY-MM-DD HH:mm"),
+                    extendedProps: {
+                        participants: eventEl['participants'],
+                        members: eventEl['members_count']
+                    },
                 }
             }));
         }).then();
@@ -67,10 +71,22 @@ const Calendar = (props) => {
     let tooltipInstance = null;
 
     const handleMouseEnter = (info) => {
-        const member_amt = 1
-        const guest_amt = 0
+        const member_amt = info.event.extendedProps.members
+        const participants_amt = info.event.extendedProps.participants;
+        const guest_amt = participants_amt - member_amt
+        let tooltip_text = "В этом слоте:"
+        for (let i = 0; i < member_amt; i++) {
+            tooltip_text += " ✓ член клуба"
+        }
+        for (let i = 0; i < guest_amt; i++) {
+            tooltip_text += " ✕ посетитель"
+        }
+        for (let i = 0; i < 4 - participants_amt; i++) {
+            tooltip_text += " 〇 свободное"
+        }
+
         tooltipInstance = new Tooltip(info.el, {
-            title: `В этом слоте: члены клуба -- ${member_amt} гости -- ${guest_amt}`,
+            title: tooltip_text,
             html: true,
             placement: "right",
             trigger: "hover",
@@ -103,7 +119,7 @@ const Calendar = (props) => {
                         headerToolbar={{
                             left: 'today prev,next',
                             center: 'title',
-                            right: 'timeGridWeek,timeGridDay'
+                            right: `${props.is_admin ? "timeGridWeek,timeGridDay" : ""}`
                         }}
                         navLinks={true} // can click day/week names to navigate views
                         editable={false} // запрет двигать и менять размер события
