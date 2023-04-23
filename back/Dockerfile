@@ -10,4 +10,4 @@ COPY . /usr/src/app
 
 EXPOSE 5000
 
-CMD ["gunicorn", "--worker-tmp-dir", "/dev/shm", "-w", "4", "--bind", "0.0.0.0:5000", "wsgi"]
+CMD ["gunicorn", "--worker-tmp-dir", "/dev/shm", "--workers", "4", "--bind", "0.0.0.0:5000", "wsgi"]
