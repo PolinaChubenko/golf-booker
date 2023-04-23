@@ -12,6 +12,8 @@ services:
       - ./back:/usr/src/app
     depends_on:
       - mongodb
+    environment:
+      MONGODB_HOST: mongodb
     networks:
       - backend
     ports:
