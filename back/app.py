@@ -10,7 +10,7 @@ load_dotenv()
 
 app = Flask(__name__)
 guard = flask_praetorian.Praetorian()
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SECRET_KEY'] = os.environ["FLASK_SECRET_KEY"]
