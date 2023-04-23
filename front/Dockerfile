@@ -6,6 +6,7 @@ COPY package.json /usr/src/app
 RUN npm install
 
 COPY . /usr/src/app
+RUN npm run build; exit 0
 RUN npm run build
 
 FROM nginx:stable-alpine
