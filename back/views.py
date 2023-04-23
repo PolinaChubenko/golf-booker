@@ -99,10 +99,7 @@ def api_slot_list():
         response.append({
             "slot": str(slot.time),
             "participants": len(bookings),
-            "bookings": {
-                "member": booking.member
-                for booking in bookings
-            }
+            "members_count": sum([int(booking.member) for booking in bookings])
         })
     return json.dumps({
         "success": True,
