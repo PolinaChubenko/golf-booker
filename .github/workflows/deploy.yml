@@ -55,7 +55,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
           source: front/build
-          target: ${{ secrets.PROJECT_ROOT }}/front_build
+          target: ${{ env.PROJECT_ROOT }}/front_build
 
   backend:
     name: Backend deploy
