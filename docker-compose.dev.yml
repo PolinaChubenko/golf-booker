@@ -5,8 +5,8 @@ services:
     build:
       context: back
       dockerfile: Dockerfile
-    image: golfbooker/flask-python
-    container_name: golfbooker_api
+    image: golfbooker_dev/flask-python
+    container_name: golfbooker_dev_api
     restart: unless-stopped
     volumes:
       - ./back:/usr/src/app
@@ -17,11 +17,11 @@ services:
     networks:
       - backend
     ports:
-      - "5000:5000"
+      - "5001:5000"
 
   mongodb:
     image: mongo:4.0.8
-    container_name: golfbooker_mongodb
+    container_name: golfbooker_dev_mongodb
     restart: unless-stopped
     command: mongod
     environment:
