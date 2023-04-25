@@ -1,0 +1,86 @@
+name: Deploy CI
+
+on:
+  push:
+    branches: [ "master", "dev" ]
+
+  workflow_dispatch:
+
+jobs:
+  backup:
+    name: Backup & Clean
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set env vars (dev)
+      if: endsWith(github.ref, '/dev')
+      run: echo "PROJECT_ROOT=/home/golfitta/dev" >> $GITHUB_ENV
+    - name: Set env vars (prod)
+      if: endsWith(github.ref, '/master')
+      run: echo "PROJECT_ROOT=/home/golfitta/master" >> $GITHUB_ENV
+    - name: Connect & backup
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          cd ${{ env.PROJECT_ROOT }}/backup
+          ./ci_backup.sh
+          rm -rf ${{ env.PROJECT_ROOT }}/front_build
+
+  frontend:
+    name: Frontend build & deploy
+    needs: backup
+    runs-on: ubuntu-latest
+    container: node:latest
+    steps:
+      - name: Set env vars (dev)
+        if: endsWith(github.ref, '/dev')
+        run: echo "PROJECT_ROOT=/home/golfitta/dev" >> $GITHUB_ENV
+      - name: Set env vars (prod)
+        if: endsWith(github.ref, '/main')
+        run: echo "PROJECT_ROOT=/home/golfitta/master" >> $GITHUB_ENV
+      - uses: actions/checkout@v3
+      - name: Build
+        run: |
+          cd front
+          npm install
+          npm run build
+      - name: Deploy
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          source: build
+          target: ${{ secrets.PROJECT_ROOT }}/front_build
+
+  backend:
+    name: Backend deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set env vars (dev)
+        if: endsWith(github.ref, '/dev')
+        run: |
+          echo "PROJECT_ROOT=/home/golfitta/dev/src-dev" >> $GITHUB_ENV
+          echo "COMPOSE_FILE=docker-compose.dev.yml" >> $GITHUB_ENV
+      - name: Set env vars (prod)
+        if: endsWith(github.ref, '/main')
+        run: |
+          echo "PROJECT_ROOT=/home/golfitta/master/src-master" >> $GITHUB_ENV
+          echo "COMPOSE_FILE=docker-compose.yml" >> $GITHUB_ENV
+      - name: Connect & deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ env.PROJECT_ROOT }}
+            docker-compose -f ${{ env.COMPOSE_FILE }} down
+            git pull
+            docker-compose -f ${{ env.COMPOSE_FILE}} up -d --build --remove-orphans
+      
