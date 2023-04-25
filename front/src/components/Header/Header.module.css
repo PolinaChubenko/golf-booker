@@ -1,0 +1,64 @@
+@font-face {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Manrope'), url('../../fonts/Manrope-Regular.ttf') format('woff');
+}
+
+@font-face {
+    font-family: 'Manrope-Bold';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Manrope'), url('../../fonts/Manrope-Bold.ttf') format('woff');
+}
+
+body {
+    font-family: Manrope, serif;
+}
+
+.header_wrapper {
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    height: 72px;
+    left: 0;
+    top: 0;
+
+    background: #88B04B;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+
+    display: grid;
+    grid-template-columns: 6fr 6fr;
+}
+
+.logo_text {
+    height: 100%;
+    margin-left: 5%;
+    letter-spacing: 0.05em;
+
+    font-family: Manrope-Bold, serif;
+    font-style: normal;
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 24px;
+    /* identical to box height, or 120% */
+
+    display: flex;
+    align-items: center;
+
+    color: #FFFFFF;
+}
+
+.logo_icon {
+    height: 50px;
+    width: 50px;
+    margin-left: 5%;
+    margin-right: 2%;
+}
+
+.icon {
+    width: 50px;
+    height: 60%;
+    padding-top: 2%;
+    margin-left: 80%;
+}
