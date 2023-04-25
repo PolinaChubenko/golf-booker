@@ -21,7 +21,7 @@ services:
 
   mongodb:
     image: mongo:4.0.8
-    container_name: golfbooker_dev/mongodb
+    container_name: golfbooker_dev_mongodb
     restart: unless-stopped
     command: mongod
     environment:
