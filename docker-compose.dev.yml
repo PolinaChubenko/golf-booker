@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  dev_api:
+  api:
     build:
       context: back
       dockerfile: Dockerfile
@@ -11,17 +11,17 @@ services:
     volumes:
       - ./back:/usr/src/app
     depends_on:
-      - dev_mongodb
+      - mongodb
     environment:
       MONGODB_HOST: mongodb
     networks:
-      - dev_backend
+      - backend
     ports:
       - "5001:5000"
 
-  dev_mongodb:
+  mongodb:
     image: mongo:4.0.8
-    container_name: golfbooker_dev_mongodb
+    container_name: golfbooker_dev/mongodb
     restart: unless-stopped
     command: mongod
     environment:
@@ -30,8 +30,8 @@ services:
     volumes:
       - ./mongodb:/data/db
     networks:
-      - dev_backend
+      - backend
 
 networks:
-  dev_backend:
+  backend:
     driver: bridge
