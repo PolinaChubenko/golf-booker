@@ -32,20 +32,6 @@ services:
     networks:
       - backend
 
-  client:
-    build:
-      context: front
-      dockerfile: Dockerfile
-    image: golfbooker/react
-    container_name: client
-    restart: unless-stopped
-    volumes:
-      - ./front:/usr/src/app
-    ports:
-      - "5001:80"
-    depends_on:
-      - api
-
 networks:
   backend:
     driver: bridge
