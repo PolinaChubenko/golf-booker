@@ -54,7 +54,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
-          source: build
+          source: front/build
           target: ${{ secrets.PROJECT_ROOT }}/front_build
 
   backend:
