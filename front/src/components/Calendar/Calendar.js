@@ -74,15 +74,15 @@ const Calendar = (props) => {
         const member_amt = info.event.extendedProps.members
         const participants_amt = info.event.extendedProps.participants;
         const guest_amt = participants_amt - member_amt
-        let tooltip_text = "В этом слоте:"
+        let tooltip_text = "В этом слоте:<br>"
         for (let i = 0; i < member_amt; i++) {
-            tooltip_text += " ✓ член клуба"
+            tooltip_text += " ✓ член клуба<br>"
         }
         for (let i = 0; i < guest_amt; i++) {
-            tooltip_text += " ✕ посетитель"
+            tooltip_text += " ✕ посетитель<br>"
         }
         for (let i = 0; i < 4 - participants_amt; i++) {
-            tooltip_text += " 〇 свободное"
+            tooltip_text += " 〇 свободное<br>"
         }
 
         tooltipInstance = new Tooltip(info.el, {
