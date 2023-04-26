@@ -104,6 +104,10 @@ const Calendar = (props) => {
         }
     };
 
+    const handleSelect = () => {
+        console.log('hadling select')
+    }
+
     return (
         <div>
             <Modal show={isModal} handleOnClose={hideModal} slot={slot}></Modal>
@@ -124,6 +128,7 @@ const Calendar = (props) => {
                         navLinks={true} // can click day/week names to navigate views
                         editable={false} // запрет двигать и менять размер события
                         selectable={props.is_admin ? true : null}
+                        select={handleSelect}
                         selectMirror={true}
                         dayMaxEvents={true} // allow "more" link when too many events
                         allDaySlot={false} // отключение поля all-day
