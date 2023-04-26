@@ -42,7 +42,7 @@ jobs:
           echo "PROJECT_ROOT=/home/golfitta/dev" >> $GITHUB_ENV
           echo "API_URL=${{ secrets.DEV_API_URL }}" >> $GITHUB_ENV
       - name: Set env vars (prod)
-        if: endsWith(github.ref, '/main')
+        if: endsWith(github.ref, '/master')
         run: |
           echo "PROJECT_ROOT=/home/golfitta/master" >> $GITHUB_ENV
           echo "API_URL=${{ secrets.PROD_API_URL }}" >> $GITHUB_ENV
@@ -75,7 +75,7 @@ jobs:
           echo "PROJECT_ROOT=/home/golfitta/dev/src-dev" >> $GITHUB_ENV
           echo "COMPOSE_FILE=docker-compose.dev.yml" >> $GITHUB_ENV
       - name: Set env vars (prod)
-        if: endsWith(github.ref, '/main')
+        if: endsWith(github.ref, '/master')
         run: |
           echo "PROJECT_ROOT=/home/golfitta/master/src-master" >> $GITHUB_ENV
           echo "COMPOSE_FILE=docker-compose.yml" >> $GITHUB_ENV
