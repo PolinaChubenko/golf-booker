@@ -24,6 +24,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
+        script_stop: true
         script: |
           cd ${{ env.PROJECT_ROOT }}/backup
           ./ci_backup.sh
@@ -37,14 +38,19 @@ jobs:
     steps:
       - name: Set env vars (dev)
         if: endsWith(github.ref, '/dev')
-        run: echo "PROJECT_ROOT=/home/golfitta/dev" >> $GITHUB_ENV
+        run: |
+          echo "PROJECT_ROOT=/home/golfitta/dev" >> $GITHUB_ENV
+          echo "API_URL=${{ secrets.DEV_API_URL }}" >> $GITHUB_ENV
       - name: Set env vars (prod)
         if: endsWith(github.ref, '/main')
-        run: echo "PROJECT_ROOT=/home/golfitta/master" >> $GITHUB_ENV
+        run: |
+          echo "PROJECT_ROOT=/home/golfitta/master" >> $GITHUB_ENV
+          echo "API_URL=${{ secrets.PROD_API_URL }}" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Build
         run: |
           cd front
+          echo "REACT_APP_API=${{ env.API_URL }}" > .env
           npm install
           CI=false npm run build
       - name: Deploy
