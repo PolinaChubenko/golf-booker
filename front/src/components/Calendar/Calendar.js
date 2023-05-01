@@ -2,18 +2,19 @@ import React from 'react'
 import FullCalendar from '@fullcalendar/react' // must go before plugins
 import timeGridPlugin from '@fullcalendar/timegrid' // a plugin!
 import interactionPlugin from '@fullcalendar/interaction';
-import {useState} from "react";
+import {useState, useRef} from "react";
 import style from "./Calendar.module.css";
 import moment from "moment";
 import Modal from "../Modal/Modal.js";
 import {CalendarStyleWrapper} from "./StylingCalendar";
 import {ajaxService} from "../../services/ajaxService";
-import { Tooltip } from "bootstrap";
+import {Tooltip} from "bootstrap";
 
 
 const Calendar = (props) => {
     const [isModal, setIsModal] = useState(false)
     const [slot, setSlot] = useState(null)
+    const calendarRef = useRef(null)
 
     const showModal = (time) => {
         setSlot(time)
@@ -32,24 +33,38 @@ const Calendar = (props) => {
     }
 
     const handleEvent = (info, successCallback, failureCallback) => {
-        ajaxService(`/slot/list?start=${info.startStr.valueOf()}&end=${info.endStr.valueOf()}`).then((data) => {
-            successCallback(data.result.map((eventEl) => {
+        ajaxService(`/events?start=${info.startStr.valueOf()}&end=${info.endStr.valueOf()}`).then((data) => {
+            let slots = []
+            data.result.slots.map((eventEl) => {
                 const start = moment(eventEl['slot']);
                 const end = moment(eventEl['slot']).add(10, "m");
-                return {
+                slots.push({
                     title: parseEventTitle(eventEl['participants']),
                     start: start.format("YYYY-MM-DD HH:mm"),
                     end: end.format("YYYY-MM-DD HH:mm"),
                     extendedProps: {
                         participants: eventEl['participants'],
-                        members: eventEl['members_count']
+                        members: eventEl['members']
                     },
-                }
-            }));
+                })
+            });
+            data.result.blocked_ranges.map((blockedEl) => {
+                const start = moment(blockedEl['start']);
+                const end = moment(blockedEl['end']);
+                slots.push({
+                    title: "",
+                    start: start.format("YYYY-MM-DD HH:mm"),
+                    end: end.format("YYYY-MM-DD HH:mm"),
+                })
+            })
+            successCallback(slots)
         }).then();
     }
 
     const handleEventClick = (info) => {
+        if (info.event.title === "") {
+            return;
+        }
         showModal(info.event.startStr)
     }
 
@@ -59,18 +74,24 @@ const Calendar = (props) => {
 
     const handleEventDidMount = (info) => {
         const calendarEventEl = info.el;
-        if (info.event.title === "Мест нет") {
-            calendarEventEl.style.backgroundColor = "#ABABAB";
-            calendarEventEl.style.borderColor = "#ABABAB";
-        } else {
+        if (info.event.title === "") {
             calendarEventEl.style.backgroundColor = "#D4D0D0";
             calendarEventEl.style.borderColor = "#D4D0D0";
+        } else if (info.event.title === "Мест нет") {
+            calendarEventEl.style.backgroundColor = "rgba(136,176,75,0.89)";
+            calendarEventEl.style.borderColor = "rgba(136,176,75,0.89)";
+        } else {
+            calendarEventEl.style.backgroundColor = "#88B04B80";
+            calendarEventEl.style.borderColor = "#88B04B80";
         }
     }
 
     let tooltipInstance = null;
 
     const handleMouseEnter = (info) => {
+        if (info.event.title === "") {
+            return;
+        }
         const member_amt = info.event.extendedProps.members
         const participants_amt = info.event.extendedProps.participants;
         const guest_amt = participants_amt - member_amt
@@ -104,8 +125,19 @@ const Calendar = (props) => {
         }
     };
 
-    const handleSelect = () => {
-        console.log('hadling select')
+    const handleSelect = (info) => {
+        if (info.end - info.start < 700000) {
+            return;
+        }
+        ajaxService(`/blocked_range`, {
+            method: 'POST',
+            body: JSON.stringify({start: info.start, end: info.end}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(() => {
+            calendarRef.current.getApi().refetchEvents();
+        });
     }
 
     return (
@@ -115,6 +147,7 @@ const Calendar = (props) => {
                 <div className={style.title}>Бронирование Tee-time</div>
                 <CalendarStyleWrapper>
                     <FullCalendar
+                        ref={calendarRef}
                         plugins={[timeGridPlugin, interactionPlugin]}
                         locale="ru"
                         timeZone="Europe/Moscow"
