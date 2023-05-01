@@ -148,11 +148,13 @@ def api_events():
         "$or": [
             {
                 "start": {
-                    "$gte": start
+                    "$gte": start,
+                    "$lte": end
                 }
             },
             {
                 "end": {
+                    "$gte": start,
                     "$lte": end
                 }
             }
