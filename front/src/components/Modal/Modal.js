@@ -35,8 +35,7 @@ const Modal = ({handleOnClose, show, slot}) => {
                         setComment(data.result.comment)
                         setPlayerList(uploadedList);
                     }
-                }
-                else {
+                } else {
                     setPlayerList([{
                         is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: ""
                     }]);
@@ -54,7 +53,7 @@ const Modal = ({handleOnClose, show, slot}) => {
         if (e === 0 || e === 1 || e === 2) {
             list[index]['member'] = (e === 1);
         } else {
-            const { name, value } = e.target;
+            const {name, value} = e.target;
             list[index][name] = value;
         }
         setPlayerList(list);
@@ -96,12 +95,14 @@ const Modal = ({handleOnClose, show, slot}) => {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (playerList.length > 0) {
+            let is_error = false
             playerList.map((player) => {
                 if (!player.name) {
-                    setError("Поле имя - обязательно к заполнению")
+                    is_error = true;
                 }
             })
-            if (error) {
+            if (is_error) {
+                setError("Поле имя - обязательно к заполнению")
                 return;
             }
         }
