@@ -13,6 +13,8 @@ instance = PyMongoInstance(db)
 class Slot(Document):
     time = fields.DateTimeField()
     comment = fields.StringField()
+    buggies = fields.IntegerField(allow_none=True, default=None)
+    carts = fields.IntegerField(allow_none=True, default=None)
 
 
 @instance.register
@@ -24,6 +26,12 @@ class Booking(Document):
     email = fields.StringField()
     hcp = fields.FloatField(allow_none=True, default=None)
     member = fields.BooleanField()
+
+
+@instance.register
+class BlockedRange(Document):
+    start = fields.StringField()
+    end = fields.StringField()
 
 
 @instance.register
@@ -50,13 +58,6 @@ class User(Document):
 
     @classmethod
     def lookup(cls, username):
-        """
-        *Required Method*
-
-        flask-praetorian requires that the user class implements a ``lookup()``
-        class method that takes a single ``username`` argument and returns a user
-        instance if there is one that matches or ``None`` if there is not.
-        """
         return cls.find_one({"username": username})
 
     @classmethod
@@ -69,4 +70,5 @@ class User(Document):
 
 Slot.ensure_indexes()
 Booking.ensure_indexes()
+BlockedRange.ensure_indexes()
 User.ensure_indexes()
