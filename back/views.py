@@ -5,7 +5,7 @@ from dateutil import parser
 from flask import request
 
 from app import app, guard
-from models import Slot, Booking
+from models import Slot, Booking, BlockedRange
 
 
 @app.route("/slot", methods=["GET", "POST"])
@@ -78,8 +78,41 @@ def api_slot():
         })
 
 
-@app.route("/slot/list", methods=["GET"])
-def api_slot_list():
+@app.route("/blocked_range", methods=["POST", "DELETE"])
+@flask_praetorian.auth_required
+def api_blocked_range():
+    data = request.get_json()
+    if "start" not in data or "end" not in data:
+        return json.dumps({
+            "success": False,
+            "reason": "'start' or 'end' property is not specified"
+        })
+    start = parser.parse(data["start"])
+    end = parser.parse(data["end"])
+    if request.method == "POST":
+        blocked_range = BlockedRange(start=start, end=end)
+        blocked_range.commit()
+        return json.dumps({
+            "success": True
+        })
+    elif request.method == "DELETE":
+        blocked_range = BlockedRange.find_one({
+            "start": start,
+            "end": end
+        })
+        if blocked_range is None:
+            return json.dumps({
+                "success": False,
+                "reason": "No such blocked range"
+            })
+        blocked_range.delete()
+        return json.dumps({
+            "success": True
+        })
+
+
+@app.route("/events", methods=["GET"])
+def api_events():
     if "start" not in request.args or "end" not in request.args:
         return json.dumps({
             "success": False,
@@ -93,17 +126,40 @@ def api_slot_list():
             "$lte": end
         }
     })
-    response = []
+    slots_response = []
     for slot in slots:
         bookings = list(Booking.find({"slot": slot}))
-        response.append({
+        slots_response.append({
             "slot": str(slot.time),
             "participants": len(bookings),
-            "members_count": sum([int(booking.member) for booking in bookings])
+            "members": sum([int(booking.member) for booking in bookings])
+        })
+    blocked_ranges = BlockedRange.find({
+        "$or": [
+            {
+                "start": {
+                    "$gte": start
+                }
+            },
+            {
+                "end": {
+                    "$lte": end
+                }
+            }
+        ]
+    })
+    blocked_ranges_response = []
+    for blocked_range in blocked_ranges:
+        blocked_ranges_response.append({
+            "start": str(blocked_range.start),
+            "end": str(blocked_range.end)
         })
     return json.dumps({
         "success": True,
-        "result": response
+        "result": {
+            "slots": slots_response,
+            "blocked_ranges": blocked_ranges_response
+        }
     })
 
 
