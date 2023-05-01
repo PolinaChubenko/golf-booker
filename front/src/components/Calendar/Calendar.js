@@ -6,6 +6,7 @@ import {useState, useRef} from "react";
 import style from "./Calendar.module.css";
 import moment from "moment";
 import Modal from "../Modal/Modal.js";
+import Alert from "../Alert/Alert.js";
 import {CalendarStyleWrapper} from "./StylingCalendar";
 import {ajaxService} from "../../services/ajaxService";
 import {Tooltip} from "bootstrap";
@@ -13,6 +14,8 @@ import {Tooltip} from "bootstrap";
 
 const Calendar = (props) => {
     const [isModal, setIsModal] = useState(false)
+    const [isAlert, setIsAlert] = useState(false)
+    const [blocked, setBlocked] = useState([])
     const [slot, setSlot] = useState(null)
     const calendarRef = useRef(null)
 
@@ -22,6 +25,14 @@ const Calendar = (props) => {
     };
     const hideModal = () => {
         setIsModal(false);
+    };
+
+    const showAlert = (start, end) => {
+        setBlocked([start, end])
+        setIsAlert(true)
+    };
+    const hideAlert = () => {
+        setIsAlert(false);
     };
 
     const parseEventTitle = (title) => {
@@ -63,9 +74,10 @@ const Calendar = (props) => {
 
     const handleEventClick = (info) => {
         if (info.event.title === "") {
-            return;
+            showAlert(info.event.startStr, info.event.endStr)
+        } else {
+            showModal(info.event.startStr)
         }
-        showModal(info.event.startStr)
     }
 
     const handleDateClick = (info) => {
@@ -142,6 +154,7 @@ const Calendar = (props) => {
 
     return (
         <div>
+            <Alert show={isAlert} handleOnClose={hideAlert} start={blocked[0]} end={blocked[1]}></Alert>
             <Modal show={isModal} handleOnClose={hideModal} slot={slot}></Modal>
             <div className={style.calendar}>
                 <div className={style.title}>Бронирование Tee-time</div>
