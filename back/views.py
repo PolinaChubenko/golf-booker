@@ -29,6 +29,8 @@ def api_slot():
             "result": {
                 "time": str(slot.time),
                 "comment": slot.comment,
+                "buggies": slot.buggies,
+                "carts": slot.carts,
                 "bookings": [
                     {
                         "name": booking.name,
@@ -51,7 +53,15 @@ def api_slot():
             slot.comment = data["comment"]
             slot.commit()
         if len(bookings) != 0 and slot is None:
-            slot = Slot(time=data["slot"], comment=data["comment"])
+            try:
+                buggies = int(data["buggies"])
+            except:
+                buggies = None
+            try:
+                carts = int(data["buggies"])
+            except:
+                carts = None
+            slot = Slot(time=data["slot"], comment=data["comment"], buggies=buggies, carts=carts)
             slot.commit()
         old_bookings = list(Booking.find({"slot": slot}))
         for b in old_bookings:
