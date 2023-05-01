@@ -30,8 +30,8 @@ class Booking(Document):
 
 @instance.register
 class BlockedRange(Document):
-    start = fields.StringField()
-    end = fields.StringField()
+    start = fields.DateTimeField()
+    end = fields.DateTimeField()
 
 
 @instance.register
