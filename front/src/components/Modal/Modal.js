@@ -20,6 +20,8 @@ const Modal = ({handleOnClose, show, slot}) => {
     const [playerList, setPlayerList] = useState([]);
     const [error, setError] = useState('');
     const [comment, setComment] = useState("")
+    const [buggies, setBuggies] = useState(0)
+    const [carts, setCarts] = useState(0)
 
     useEffect(() => {
         setTeeTimeForModal(slot);
@@ -33,6 +35,8 @@ const Modal = ({handleOnClose, show, slot}) => {
                             uploadedList.push({...player, is_new: false});
                         });
                         setComment(data.result.comment)
+                        setBuggies(data.result.buggies)
+                        setCarts(data.result.carts)
                         setPlayerList(uploadedList);
                     }
                 } else {
@@ -40,6 +44,8 @@ const Modal = ({handleOnClose, show, slot}) => {
                         is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: ""
                     }]);
                     setComment("")
+                    setBuggies("")
+                    setCarts("")
                 }
             }).then(() => {
                 setIsUploaded(true);
@@ -89,7 +95,18 @@ const Modal = ({handleOnClose, show, slot}) => {
     }
 
     const handleCommentChange = (event) => {
-        setComment(event.target.value)
+        const {name, value} = event.target;
+        setComment(value)
+    }
+
+    const handleBuggiesChange = (event) => {
+        const {name, value} = event.target;
+        setBuggies(value)
+    }
+
+    const handleCartsChange = (event) => {
+        const {name, value} = event.target;
+        setCarts(value)
     }
 
     const handleSubmit = (event) => {
@@ -108,7 +125,8 @@ const Modal = ({handleOnClose, show, slot}) => {
         }
         ajaxService(`/slot`, {
             method: 'POST',
-            body: JSON.stringify({slot: slot, bookings: playerList, comment: comment}),
+            body: JSON.stringify({slot: slot, bookings: playerList, comment: comment,
+                buggies: buggies, carts: carts }),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -134,6 +152,20 @@ const Modal = ({handleOnClose, show, slot}) => {
                         handleRemove={handleRemove}
                     />
                     {playerList.length < 4 && <Add className={style.icon} onClick={handleAddClick}/>}
+                </div>
+                <div className={style.players_wrapper}>
+                    <p>Гольф-кары</p>
+                </div>
+                <div className={style.comment_wrapper}>
+                    <input name={"buggies"} type={"number"} step={1} min={0} placeholder={"buggies"} value={buggies}
+                           onChange={handleBuggiesChange}></input>
+                </div>
+                <div className={style.players_wrapper}>
+                    <p>Тележки</p>
+                </div>
+                <div className={style.comment_wrapper}>
+                    <input name={"carts"} type={"number"} step={1} min={0} placeholder={"carts"} value={carts}
+                           onChange={handleCartsChange}></input>
                 </div>
                 <div className={style.players_wrapper}>
                     <p>Комментарий</p>
