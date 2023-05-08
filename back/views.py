@@ -49,18 +49,20 @@ def api_slot():
         data = request.get_json()
         bookings = data["bookings"]
         slot = Slot.find_one({"time": parser.parse(data["slot"])})
+        try:
+            buggies = int(data["buggies"])
+        except:
+            buggies = None
+        try:
+            carts = int(data["carts"])
+        except:
+            carts = None
         if len(bookings) != 0 and slot is not None:
             slot.comment = data["comment"]
+            slot.buggies = buggies
+            slot.carts = carts
             slot.commit()
         if len(bookings) != 0 and slot is None:
-            try:
-                buggies = int(data["buggies"])
-            except:
-                buggies = None
-            try:
-                carts = int(data["buggies"])
-            except:
-                carts = None
             slot = Slot(time=data["slot"], comment=data["comment"], buggies=buggies, carts=carts)
             slot.commit()
         old_bookings = list(Booking.find({"slot": slot}))
