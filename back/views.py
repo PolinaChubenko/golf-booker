@@ -31,6 +31,7 @@ def api_slot():
                 "comment": slot.comment,
                 "buggies": slot.buggies,
                 "carts": slot.carts,
+                "confirmed": slot.confirmed,
                 "bookings": [
                     {
                         "name": booking.name,
@@ -61,9 +62,11 @@ def api_slot():
             slot.comment = data["comment"]
             slot.buggies = buggies
             slot.carts = carts
+            slot.confirmed = data["confirmed"]
             slot.commit()
         if len(bookings) != 0 and slot is None:
-            slot = Slot(time=data["slot"], comment=data["comment"], buggies=buggies, carts=carts)
+            slot = Slot(time=data["slot"], comment=data["comment"], buggies=buggies, carts=carts,
+                        confirmed=data["confirmed"])
             slot.commit()
         old_bookings = list(Booking.find({"slot": slot}))
         for b in old_bookings:
@@ -144,7 +147,8 @@ def api_events():
         slots_response.append({
             "slot": str(slot.time),
             "participants": len(bookings),
-            "members": sum([int(booking.member) for booking in bookings])
+            "members": sum([int(booking.member) for booking in bookings]),
+            "confirmed": slot.confirmed
         })
     blocked_ranges = BlockedRange.find({
         "$or": [
