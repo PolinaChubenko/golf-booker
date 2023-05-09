@@ -167,19 +167,21 @@ const Modal = ({handleOnClose, show, slot}) => {
                     />
                     {playerList.length < 4 && <Add className={style.icon} onClick={handleAddClick}/>}
                 </div>
-                <div className={style.players_wrapper}>
-                    <p>Гольф-кары</p>
-                </div>
-                <div className={style.comment_wrapper}>
-                    <input name={"buggies"} type={"number"} step={1} min={0} placeholder={"buggies"} value={buggies}
-                           onChange={handleBuggiesChange}></input>
-                </div>
-                <div className={style.players_wrapper}>
-                    <p>Тележки</p>
-                </div>
-                <div className={style.comment_wrapper}>
-                    <input name={"carts"} type={"number"} step={1} min={0} placeholder={"carts"} value={carts}
-                           onChange={handleCartsChange}></input>
+                <div class={style.buggies_carts_wrapper}>
+                    <div className={style.buggies_carts_text_wrapper}>
+                        <p>Гольф-кары</p>
+                    </div>
+                    <div className={style.buggies_carts_text_wrapper}>
+                        <p>Тележки</p>
+                    </div>
+                    <div className={style.quantity_fields_wrapper}>
+                        <input name={"buggies"} type={"number"} step={1} min={0} placeholder={"buggies"} value={buggies}
+                               onChange={handleBuggiesChange}></input>
+                    </div>
+                    <div className={style.quantity_fields_wrapper}>
+                        <input name={"carts"} type={"number"} step={1} min={0} placeholder={"carts"} value={carts}
+                               onChange={handleCartsChange}></input>
+                    </div>
                 </div>
                 <div className={style.players_wrapper}>
                     <p>Комментарий</p>
