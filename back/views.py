@@ -148,7 +148,7 @@ def api_events():
     for slot in slots:
         bookings = list(Booking.find({"slot": slot}))
         if is_day_view:
-            slot.append({
+            slots_response.append({
                 "time": str(slot.time),
                 "comment": slot.comment,
                 "buggies": slot.buggies,
