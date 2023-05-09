@@ -17,7 +17,17 @@ const Calendar = (props) => {
     const [isAlert, setIsAlert] = useState(false)
     const [blocked, setBlocked] = useState([])
     const [slot, setSlot] = useState(null)
+    const [CurrTimeInterval, setCurrTimeInterval] = useState('week')
     const calendarRef = useRef(null)
+
+    document.addEventListener('click', function (event) {
+        console.log("addEventListener:", event.target.title)
+        if (event.target.title === "Неделя view") {
+            setCurrTimeInterval('week')
+        } else if (event.target.title === "День view") {
+            setCurrTimeInterval('day')
+        }
+    }, false);
 
     const showModal = (time) => {
         setSlot(time)
@@ -49,8 +59,9 @@ const Calendar = (props) => {
             data.result.slots.map((eventEl) => {
                 const start = moment(eventEl['slot']);
                 const end = moment(eventEl['slot']).add(10, "m");
+                const weekTitle = parseEventTitle(eventEl['participants']);
                 slots.push({
-                    title: parseEventTitle(eventEl['participants']),
+                    title: CurrTimeInterval === 'week' ? weekTitle : '',
                     start: start.format("YYYY-MM-DD HH:mm"),
                     end: end.format("YYYY-MM-DD HH:mm"),
                     extendedProps: {
@@ -181,15 +192,15 @@ const Calendar = (props) => {
                         eventDurationEditable={false} // запрет менять размер события
                         firstDay={1} // начало недели - понедельник
 
-                        slotDuration='00:10:00'
-                        slotLabelInterval={10}
+                        slotDuration={CurrTimeInterval === 'week' ? '00:10:00' : '00:05:00'}
+                        slotLabelInterval={CurrTimeInterval === 'week' ? 10 : 5}
                         slotLabelFormat={{
                             hour: 'numeric',
                             minute: '2-digit',
                             omitZeroMinute: false,
                             meridiem: 'short',
                         }}
-                        slotMinTime='09:00:00'
+                        slotMinTigit me='09:00:00'
                         slotMaxTime='18:10:00'
 
                         buttonText={{

@@ -47,6 +47,7 @@ const Modal = ({handleOnClose, show, slot}) => {
                     setBuggies("")
                     setCarts("")
                 }
+
             }).then(() => {
                 setIsUploaded(true);
             });
@@ -126,7 +127,7 @@ const Modal = ({handleOnClose, show, slot}) => {
         ajaxService(`/slot`, {
             method: 'POST',
             body: JSON.stringify({slot: slot, bookings: playerList, comment: comment,
-                buggies: buggies, carts: carts }),
+                buggies: buggies, carts: carts, confirmed: false }),
             headers: {
                 'Content-Type': 'application/json'
             }
