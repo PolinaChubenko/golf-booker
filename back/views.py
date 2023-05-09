@@ -147,34 +147,26 @@ def api_events():
     slots_response = []
     for slot in slots:
         bookings = list(Booking.find({"slot": slot}))
-        if is_day_view:
-            slots_response.append({
-                "time": str(slot.time),
-                "comment": slot.comment,
-                "buggies": slot.buggies,
-                "carts": slot.carts,
-                "confirmed": slot.confirmed,
-                "participants": len(bookings),
-                "members": sum([int(booking.member) for booking in bookings]),
-                "bookings": [
-                    {
-                        "name": booking.name,
-                        "surname": booking.surname,
-                        "phone": booking.phone,
-                        "email": booking.email,
-                        "hcp": booking.hcp,
-                        "member": booking.member
-                    }
-                    for booking in bookings
-                ]
-            })
-        else:
-            slots_response.append({
-                "slot": str(slot.time),
-                "participants": len(bookings),
-                "members": sum([int(booking.member) for booking in bookings]),
-                "confirmed": slot.confirmed
-            })
+        slots_response.append({
+            "time": str(slot.time),
+            "comment": slot.comment,
+            "buggies": slot.buggies,
+            "carts": slot.carts,
+            "confirmed": slot.confirmed,
+            "participants": len(bookings),
+            "members": sum([int(booking.member) for booking in bookings]),
+            "bookings": [
+                {
+                    "name": booking.name,
+                    "surname": booking.surname,
+                    "phone": booking.phone,
+                    "email": booking.email,
+                    "hcp": booking.hcp,
+                    "member": booking.member
+                }
+                for booking in bookings
+            ]
+        })
     blocked_ranges = BlockedRange.find({
         "$or": [
             {
