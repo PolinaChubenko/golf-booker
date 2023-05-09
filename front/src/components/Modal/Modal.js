@@ -4,6 +4,7 @@ import moment from "moment/moment";
 import SectionController from "../PlayerSection/SectionController";
 import {ReactComponent as Add} from "./../../icons/Add.svg";
 import {ajaxService} from "../../services/ajaxService";
+import TwoStateCheckbox from "../CheckBox/TwoStateCheckbox"
 
 const Modal = ({handleOnClose, show, slot}) => {
     const showHideClassName = show ? style.display_block : style.display_none;
@@ -22,6 +23,7 @@ const Modal = ({handleOnClose, show, slot}) => {
     const [comment, setComment] = useState("")
     const [buggies, setBuggies] = useState(0)
     const [carts, setCarts] = useState(0)
+    const [confirmed, setConfirmed] = useState(0)
 
     useEffect(() => {
         setTeeTimeForModal(slot);
@@ -37,6 +39,7 @@ const Modal = ({handleOnClose, show, slot}) => {
                         setComment(data.result.comment)
                         setBuggies(data.result.buggies)
                         setCarts(data.result.carts)
+                        setConfirmed(data.result.confirmed ? 1 : 0)
                         setPlayerList(uploadedList);
                     }
                 } else {
@@ -45,6 +48,7 @@ const Modal = ({handleOnClose, show, slot}) => {
                     }]);
                     setComment("")
                     setBuggies("")
+                    setConfirmed(0)
                     setCarts("")
                 }
             }).then(() => {
@@ -109,6 +113,10 @@ const Modal = ({handleOnClose, show, slot}) => {
         setCarts(value)
     }
 
+    const handleConfirmedChange = (event) => {
+        setConfirmed(event)
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         if (playerList.length > 0) {
@@ -126,7 +134,7 @@ const Modal = ({handleOnClose, show, slot}) => {
         ajaxService(`/slot`, {
             method: 'POST',
             body: JSON.stringify({slot: slot, bookings: playerList, comment: comment,
-                buggies: buggies, carts: carts }),
+                buggies: buggies, carts: carts, confirmed: confirmed === 1 }),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -138,8 +146,14 @@ const Modal = ({handleOnClose, show, slot}) => {
     return (
         <div className={[showHideClassName, style.modal].join(" ")}>
             <section className={style.modal_main}>
-                <div className={style.tee_time_wrapper}>
-                    <p>Запись {tee[0]} на время {tee[1]}</p>
+                <div className={style.top_wrapper}>
+                    <div className={style.tee_time_wrapper}>{tee[0]}, {tee[1]}</div>
+                    <div className={style.confirmed}>
+                        <TwoStateCheckbox value={confirmed} onChange={handleConfirmedChange}/>
+                    </div>
+                </div>
+                <div className={style.field_wrapper}>
+                    <div><p>Поле: FieldName</p></div>
                 </div>
                 <div className={style.players_wrapper}>
                     <p>Игроки</p>
