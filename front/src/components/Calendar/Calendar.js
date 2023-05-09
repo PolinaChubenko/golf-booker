@@ -91,7 +91,7 @@ const Calendar = (props) => {
             calendarEventEl.style.backgroundColor = "#D4D0D0";
             calendarEventEl.style.borderColor = "#D4D0D0";
         } else if (info.event.title === "Мест нет") {
-            if (props.is_admin && info.event.extendedProps.confirmed) {
+            if (props.is_admin && !info.event.extendedProps.confirmed) {
                 calendarEventEl.style.backgroundColor = "#FBEDBB";
                 calendarEventEl.style.borderColor = "#FBEDBB";
             } else {
@@ -99,7 +99,7 @@ const Calendar = (props) => {
                 calendarEventEl.style.borderColor = "rgba(136,176,75,0.89)";
             }
         } else {
-            if (props.is_admin && info.event.extendedProps.confirmed) {
+            if (props.is_admin && !info.event.extendedProps.confirmed) {
                 calendarEventEl.style.backgroundColor = "#FBEDBB";
                 calendarEventEl.style.borderColor = "#FBEDBB";
             } else {
