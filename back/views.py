@@ -147,8 +147,7 @@ def api_events():
     slots_response = []
     for slot in slots:
         bookings = list(Booking.find({"slot": slot}))
-        jwt_data = get_jwt_data_from_app_context()
-        if jwt_data.get("id") is not None and is_day_view:
+        if is_day_view:
             slot.append({
                 "time": str(slot.time),
                 "comment": slot.comment,
