@@ -11,24 +11,23 @@ const getNextState = (state) => { // правила переключения
     return state
 }
 
-const updateInput = (ref, checked) => { // Синхронизация состояния checked с ref
+const updateInput = (ref, new_value) => { // Синхронизация состояния checked с ref
     const input = ref.current;
     if (input) {
-        input.checked = (checked === MEMB_STATE); // галочка, если MEMB_STATE
-        input.indeterminate = (checked === VIST_STATE); // минус, если VIST_STATE
-        // ничего, если false
+        input.checked = (new_value === MEMB_STATE); // галочка, если MEMB_STATE
+        input.indeterminate = (new_value === VIST_STATE); // минус, если VIST_STATE
     }
 };
 
 // Рассчитан только на три состояния
-const ThreeStateCheckbox = ({name, checked, disabled, onChange}) => {
-    const inputRef = useRef(FREE_STATE); // Состояние checkbox
-    const checkedRef = useRef(checked); // Состояние для работы, синхронизируется с inputRef
+const ThreeStateCheckbox = ({name, value = 0, disabled = false, onChange = null}) => {
+    const inputRef = useRef(null); // Состояние checkbox: [checked, indeterminate]
+    const checkedRef = useRef(value); // Номер состояния inputRef
 
     useEffect(() => { // вызывается, при создании checkbox (задание начального состояния)
-        checkedRef.current = checked;
-        updateInput(inputRef, checked);
-    }, [checked]);
+        checkedRef.current = value
+        updateInput(inputRef, value);
+    }, [value]);
 
     const handleClick = () => {
         checkedRef.current = getNextState(checkedRef.current)
@@ -49,12 +48,4 @@ const ThreeStateCheckbox = ({name, checked, disabled, onChange}) => {
     );
 };
 
-export const CheckBox = ({value = 0, disabled = false, onChange = null}) => {
-    const [checked] = useState(value); // Значение по умолчанию
-
-    return (
-        <ThreeStateCheckbox checked={checked} disabled={disabled} onChange={onChange}/>
-    );
-};
-
-export default CheckBox;
+export default ThreeStateCheckbox;

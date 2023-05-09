@@ -47,15 +47,16 @@ const Calendar = (props) => {
         ajaxService(`/events?start=${info.startStr.valueOf()}&end=${info.endStr.valueOf()}`).then((data) => {
             let slots = []
             data.result.slots.map((eventEl) => {
-                const start = moment(eventEl['slot']);
-                const end = moment(eventEl['slot']).add(10, "m");
+                const start = moment(eventEl['time']);
+                const end = moment(eventEl['time']).add(10, "m");
                 slots.push({
                     title: parseEventTitle(eventEl['participants']),
                     start: start.format("YYYY-MM-DD HH:mm"),
                     end: end.format("YYYY-MM-DD HH:mm"),
                     extendedProps: {
                         participants: eventEl['participants'],
-                        members: eventEl['members']
+                        members: eventEl['members'],
+                        confirmed: eventEl['confirmed'] ? 1 : 0
                     },
                 })
             });
@@ -90,11 +91,21 @@ const Calendar = (props) => {
             calendarEventEl.style.backgroundColor = "#D4D0D0";
             calendarEventEl.style.borderColor = "#D4D0D0";
         } else if (info.event.title === "Мест нет") {
-            calendarEventEl.style.backgroundColor = "rgba(136,176,75,0.89)";
-            calendarEventEl.style.borderColor = "rgba(136,176,75,0.89)";
+            if (props.is_admin && !info.event.extendedProps.confirmed) {
+                calendarEventEl.style.backgroundColor = "#FBEDBB";
+                calendarEventEl.style.borderColor = "#FBEDBB";
+            } else {
+                calendarEventEl.style.backgroundColor = "rgba(136,176,75,0.89)";
+                calendarEventEl.style.borderColor = "rgba(136,176,75,0.89)";
+            }
         } else {
-            calendarEventEl.style.backgroundColor = "#88B04B80";
-            calendarEventEl.style.borderColor = "#88B04B80";
+            if (props.is_admin && !info.event.extendedProps.confirmed) {
+                calendarEventEl.style.backgroundColor = "#FBEDBB";
+                calendarEventEl.style.borderColor = "#FBEDBB";
+            } else {
+                calendarEventEl.style.backgroundColor = "#88B04B80";
+                calendarEventEl.style.borderColor = "#88B04B80";
+            }
         }
     }
 
