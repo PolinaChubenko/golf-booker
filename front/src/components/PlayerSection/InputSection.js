@@ -1,14 +1,14 @@
 import style from "./PlayerSection.module.css"
 import {ReactComponent as Cross} from "./../../icons/Cross.svg";
 import {ReactComponent as Paste} from "./../../icons/Paste.svg";
-import CheckBox from "../CheckBox/CheckBox";
+import ThreeStateCheckbox from "../CheckBox/ThreeStateCheckbox";
 
 const InputSection = ({index, player, handleInputChange, handleRemove}) => {
     return (
         <div className={style.input_section_wrapper}>
             <div className={style.member_wrapper}>
                 Член клуба:
-                <CheckBox value={0} onChange={e => handleInputChange(e, index)}/>
+                <ThreeStateCheckbox value={0} onChange={e => handleInputChange(e, index)}/>
             </div>
             <div>
                 <input name={"name"} placeholder={"Имя"} value={player.name}
