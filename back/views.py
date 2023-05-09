@@ -1,8 +1,10 @@
 import json
+from datetime import timedelta
 
 import flask_praetorian
 from dateutil import parser
 from flask import request
+from flask_praetorian.utilities import get_jwt_data_from_app_context
 
 from app import app, guard
 from models import Slot, Booking, BlockedRange
@@ -135,6 +137,7 @@ def api_events():
         })
     start = parser.parse(request.args["start"])
     end = parser.parse(request.args["end"])
+    is_day_view = (end - start) <= timedelta(hours=24)
     slots = Slot.find({
         "time": {
             "$gte": start,
@@ -144,12 +147,35 @@ def api_events():
     slots_response = []
     for slot in slots:
         bookings = list(Booking.find({"slot": slot}))
-        slots_response.append({
-            "slot": str(slot.time),
-            "participants": len(bookings),
-            "members": sum([int(booking.member) for booking in bookings]),
-            "confirmed": slot.confirmed
-        })
+        jwt_data = get_jwt_data_from_app_context()
+        if jwt_data.get("id") is not None and is_day_view:
+            slot.append({
+                "time": str(slot.time),
+                "comment": slot.comment,
+                "buggies": slot.buggies,
+                "carts": slot.carts,
+                "confirmed": slot.confirmed,
+                "participants": len(bookings),
+                "members": sum([int(booking.member) for booking in bookings]),
+                "bookings": [
+                    {
+                        "name": booking.name,
+                        "surname": booking.surname,
+                        "phone": booking.phone,
+                        "email": booking.email,
+                        "hcp": booking.hcp,
+                        "member": booking.member
+                    }
+                    for booking in bookings
+                ]
+            })
+        else:
+            slots_response.append({
+                "slot": str(slot.time),
+                "participants": len(bookings),
+                "members": sum([int(booking.member) for booking in bookings]),
+                "confirmed": slot.confirmed
+            })
     blocked_ranges = BlockedRange.find({
         "$or": [
             {
