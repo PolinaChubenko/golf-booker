@@ -15,7 +15,7 @@ class Slot(Document):
     comment = fields.StringField()
     buggies = fields.IntegerField(allow_none=True, default=None)
     carts = fields.IntegerField(allow_none=True, default=None)
-    confirmed = fields.BooleanField(default=False)
+    confirmed = fields.IntegerField(default=0)
 
 
 @instance.register

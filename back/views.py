@@ -64,11 +64,11 @@ def api_slot():
             slot.comment = data["comment"]
             slot.buggies = buggies
             slot.carts = carts
-            slot.confirmed = data["confirmed"]
+            slot.confirmed = int(data["confirmed"])
             slot.commit()
         if len(bookings) != 0 and slot is None:
             slot = Slot(time=data["slot"], comment=data["comment"], buggies=buggies, carts=carts,
-                        confirmed=data["confirmed"])
+                        confirmed=int(data["confirmed"]))
             slot.commit()
         old_bookings = list(Booking.find({"slot": slot}))
         for b in old_bookings:
