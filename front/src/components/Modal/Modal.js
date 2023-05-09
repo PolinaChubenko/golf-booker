@@ -4,6 +4,7 @@ import moment from "moment/moment";
 import SectionController from "../PlayerSection/SectionController";
 import {ReactComponent as Add} from "./../../icons/Add.svg";
 import {ajaxService} from "../../services/ajaxService";
+import TwoStateCheckbox from "../CheckBox/TwoStateCheckbox"
 
 const Modal = ({handleOnClose, show, slot}) => {
     const showHideClassName = show ? style.display_block : style.display_none;
@@ -20,6 +21,9 @@ const Modal = ({handleOnClose, show, slot}) => {
     const [playerList, setPlayerList] = useState([]);
     const [error, setError] = useState('');
     const [comment, setComment] = useState("")
+    const [buggies, setBuggies] = useState(0)
+    const [carts, setCarts] = useState(0)
+    const [confirmed, setConfirmed] = useState(0)
 
     useEffect(() => {
         setTeeTimeForModal(slot);
@@ -33,6 +37,9 @@ const Modal = ({handleOnClose, show, slot}) => {
                             uploadedList.push({...player, is_new: false});
                         });
                         setComment(data.result.comment)
+                        setBuggies(data.result.buggies)
+                        setCarts(data.result.carts)
+                        setConfirmed(data.result.confirmed ? 1 : 0)
                         setPlayerList(uploadedList);
                     }
                 } else {
@@ -40,6 +47,9 @@ const Modal = ({handleOnClose, show, slot}) => {
                         is_new: true, member: false, name: "", surname: "", email: "", phone: "", hcp: ""
                     }]);
                     setComment("")
+                    setBuggies("")
+                    setConfirmed(0)
+                    setCarts("")
                 }
             }).then(() => {
                 setIsUploaded(true);
@@ -89,7 +99,22 @@ const Modal = ({handleOnClose, show, slot}) => {
     }
 
     const handleCommentChange = (event) => {
-        setComment(event.target.value)
+        const {name, value} = event.target;
+        setComment(value)
+    }
+
+    const handleBuggiesChange = (event) => {
+        const {name, value} = event.target;
+        setBuggies(value)
+    }
+
+    const handleCartsChange = (event) => {
+        const {name, value} = event.target;
+        setCarts(value)
+    }
+
+    const handleConfirmedChange = (event) => {
+        setConfirmed(event)
     }
 
     const handleSubmit = (event) => {
@@ -108,7 +133,8 @@ const Modal = ({handleOnClose, show, slot}) => {
         }
         ajaxService(`/slot`, {
             method: 'POST',
-            body: JSON.stringify({slot: slot, bookings: playerList, comment: comment}),
+            body: JSON.stringify({slot: slot, bookings: playerList, comment: comment,
+                buggies: buggies, carts: carts, confirmed: confirmed === 1 }),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -120,8 +146,14 @@ const Modal = ({handleOnClose, show, slot}) => {
     return (
         <div className={[showHideClassName, style.modal].join(" ")}>
             <section className={style.modal_main}>
-                <div className={style.tee_time_wrapper}>
-                    <p>Запись {tee[0]} на время {tee[1]}</p>
+                <div className={style.top_wrapper}>
+                    <div className={style.tee_time_wrapper}>{tee[0]}, {tee[1]}</div>
+                    <div className={style.confirmed}>
+                        <TwoStateCheckbox value={confirmed} onChange={handleConfirmedChange}/>
+                    </div>
+                </div>
+                <div className={style.field_wrapper}>
+                    <div><p>Поле: FieldName</p></div>
                 </div>
                 <div className={style.players_wrapper}>
                     <p>Игроки</p>
@@ -134,6 +166,22 @@ const Modal = ({handleOnClose, show, slot}) => {
                         handleRemove={handleRemove}
                     />
                     {playerList.length < 4 && <Add className={style.icon} onClick={handleAddClick}/>}
+                </div>
+                <div class={style.buggies_carts_wrapper}>
+                    <div className={style.buggies_carts_text_wrapper}>
+                        <p>Гольф-кары</p>
+                    </div>
+                    <div className={style.buggies_carts_text_wrapper}>
+                        <p>Тележки</p>
+                    </div>
+                    <div className={style.quantity_fields_wrapper}>
+                        <input name={"buggies"} type={"number"} step={1} min={0} placeholder={"buggies"} value={buggies}
+                               onChange={handleBuggiesChange}></input>
+                    </div>
+                    <div className={style.quantity_fields_wrapper}>
+                        <input name={"carts"} type={"number"} step={1} min={0} placeholder={"carts"} value={carts}
+                               onChange={handleCartsChange}></input>
+                    </div>
                 </div>
                 <div className={style.players_wrapper}>
                     <p>Комментарий</p>
