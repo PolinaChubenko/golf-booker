@@ -5,6 +5,8 @@ import SectionController from "../PlayerSection/SectionController";
 import {ReactComponent as Add} from "./../../icons/Add.svg";
 import {ajaxService} from "../../services/ajaxService";
 import TwoStateCheckbox from "../CheckBox/TwoStateCheckbox"
+import TwoStateTextCheckbox from "../CheckBox/TwoStateTextCheckbox"
+
 
 const Modal = ({handleOnClose, show, slot}) => {
     const showHideClassName = show ? style.display_block : style.display_none;
@@ -149,7 +151,7 @@ const Modal = ({handleOnClose, show, slot}) => {
                 <div className={style.top_wrapper}>
                     <div className={style.tee_time_wrapper}>{tee[0]}, {tee[1]}</div>
                     <div className={style.confirmed}>
-                        <TwoStateCheckbox value={confirmed} onChange={handleConfirmedChange}/>
+                        <TwoStateTextCheckbox value={confirmed} onChange={handleConfirmedChange}/>
                     </div>
                 </div>
                 <div className={style.field_wrapper}>
