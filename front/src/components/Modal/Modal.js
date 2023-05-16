@@ -39,8 +39,8 @@ const Modal = ({handleOnClose, show, slot}) => {
                             uploadedList.push({...player, is_new: false});
                         });
                         setComment(data.result.comment)
-                        setBuggies(data.result.buggies)
-                        setCarts(data.result.carts)
+                        setBuggies(data.result.buggies == null ? 0 : data.result.buggies)
+                        setCarts(data.result.carts == null ? 0 : data.result.carts)
                         setConfirmed(data.result.confirmed ? 1 : 0)
                         setPlayerList(uploadedList);
                     }
@@ -50,8 +50,8 @@ const Modal = ({handleOnClose, show, slot}) => {
                     }]);
                     setComment("")
                     setBuggies("")
-                    setConfirmed(0)
                     setCarts("")
+                    setConfirmed(0)
                 }
             }).then(() => {
                 setIsUploaded(true);
