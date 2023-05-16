@@ -53,19 +53,19 @@ const Calendar = (props) => {
     }
 
     const parseEventDayTitle = (event) => {
-        let title = "<b>Игроки:</b> "
+        let title = "&nbsp;&nbsp;&nbsp;<b>Игроки:</b> &emsp;&emsp;"
         for(let key in event['bookings']) {
             let player = event['bookings'][key];
-            title += player['name'] + " "
+            title += (player['member'] ? "✓" : "✕") + " "
+                + player['name'] + " "
                 + player['surname'] + " "
-                + (player['member'] ? "✓" : "✕")
-                + "   ";
+                + " &emsp;&emsp;";
         }
         title += "<br/>";
-        title += "Тележки: " + (event['buggies'] == null ? 0 : event['buggies'])
-            + " Кары: " + (event['carts'] == null ? 0 : event['carts'])
+        title += "&nbsp;&nbsp;&nbsp;<b>Тележки:</b> " + (event['buggies'] == null ? 0 : event['buggies'])
+            + " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Кары:</b> " + (event['carts'] == null ? 0 : event['carts'])
             + "<br/>";
-        title += "Комментарий:" + (event['comment'] == null ? "no" : event['comment']);
+        title += "&nbsp;&nbsp;&nbsp;<b>Комментарий:</b> <i>" + (event['comment'] == null ? "no" : event['comment']) + "</i>";
         return title;
     }
 
