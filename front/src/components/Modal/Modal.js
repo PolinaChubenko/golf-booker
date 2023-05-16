@@ -5,6 +5,8 @@ import SectionController from "../PlayerSection/SectionController";
 import {ReactComponent as Add} from "./../../icons/Add.svg";
 import {ajaxService} from "../../services/ajaxService";
 import TwoStateCheckbox from "../CheckBox/TwoStateCheckbox"
+import TwoStateTextCheckbox from "../CheckBox/TwoStateTextCheckbox"
+
 
 const Modal = ({handleOnClose, show, slot}) => {
     const showHideClassName = show ? style.display_block : style.display_none;
@@ -37,8 +39,8 @@ const Modal = ({handleOnClose, show, slot}) => {
                             uploadedList.push({...player, is_new: false});
                         });
                         setComment(data.result.comment)
-                        setBuggies(data.result.buggies)
-                        setCarts(data.result.carts)
+                        setBuggies(data.result.buggies == null ? 0 : data.result.buggies)
+                        setCarts(data.result.carts == null ? 0 : data.result.carts)
                         setConfirmed(data.result.confirmed ? 1 : 0)
                         setPlayerList(uploadedList);
                     }
@@ -48,8 +50,8 @@ const Modal = ({handleOnClose, show, slot}) => {
                     }]);
                     setComment("")
                     setBuggies("")
-                    setConfirmed(0)
                     setCarts("")
+                    setConfirmed(0)
                 }
             }).then(() => {
                 setIsUploaded(true);
@@ -149,7 +151,7 @@ const Modal = ({handleOnClose, show, slot}) => {
                 <div className={style.top_wrapper}>
                     <div className={style.tee_time_wrapper}>{tee[0]}, {tee[1]}</div>
                     <div className={style.confirmed}>
-                        <TwoStateCheckbox value={confirmed} onChange={handleConfirmedChange}/>
+                        <TwoStateTextCheckbox value={confirmed} onChange={handleConfirmedChange}/>
                     </div>
                 </div>
                 <div className={style.field_wrapper}>

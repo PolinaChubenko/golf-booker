@@ -35,3 +35,41 @@
 
 .checkbox:disabled {
 }
+
+.textcheckbox {
+    -webkit-appearance: none;
+    border: 0 solid #cacece;
+    padding: 9px;
+    border-radius: 3px;
+    display: inline-block;
+    position: relative;
+    height: 34px !important;
+}
+
+.textcheckbox:checked {
+    width: 120px !important;
+    background-color: #C3D7A5;
+}
+
+.textcheckbox:checked:after {
+    content: 'На поле';
+    font-size: 26px;
+    position: absolute;
+    top: 2px;
+    left: 9px;
+    color: #494C62;
+}
+
+.textcheckbox:indeterminate {
+    width: 140px !important;
+    background-color: #D9D9D9;
+}
+
+.textcheckbox:indeterminate:after {
+    content: 'Ожидание';
+    font-size: 26px;
+    position: absolute;
+    top: 2px;
+    left: 7px;
+    color: #494C62;
+}

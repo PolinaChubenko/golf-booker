@@ -17,7 +17,16 @@ const Calendar = (props) => {
     const [isAlert, setIsAlert] = useState(false)
     const [blocked, setBlocked] = useState([])
     const [slot, setSlot] = useState(null)
+    const [CurrTimeInterval, setCurrTimeInterval] = useState('week')
     const calendarRef = useRef(null)
+
+    document.addEventListener('click', function (event) {
+        if (event.target.title === "Неделя view") {
+            setCurrTimeInterval('week')
+        } else if (event.target.title === "День view") {
+            setCurrTimeInterval('day')
+        }
+    }, false);
 
     const showModal = (time) => {
         setSlot(time)
@@ -35,12 +44,29 @@ const Calendar = (props) => {
         setIsAlert(false);
     };
 
-    const parseEventTitle = (title) => {
+    const parseEventWeekTitle = (title) => {
         if (title === 4) {
             return "Мест нет"
         } else {
             return title + "/4 мест занято";
         }
+    }
+
+    const parseEventDayTitle = (event) => {
+        let title = "&nbsp;&nbsp;&nbsp;<b>Игроки:</b> &emsp;&emsp;"
+        for(let key in event['bookings']) {
+            let player = event['bookings'][key];
+            title += (player['member'] ? "✓" : "✕") + " "
+                + player['name'] + " "
+                + player['surname'] + " "
+                + " &emsp;&emsp;";
+        }
+        title += "<br/>";
+        title += "&nbsp;&nbsp;&nbsp;<b>Тележки:</b> " + (event['buggies'] == null ? 0 : event['buggies'])
+            + " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Кары:</b> " + (event['carts'] == null ? 0 : event['carts'])
+            + "<br/>";
+        title += "&nbsp;&nbsp;&nbsp;<b>Комментарий:</b> <i>" + (event['comment'] == null ? "no" : event['comment']) + "</i>";
+        return title;
     }
 
     const handleEvent = (info, successCallback, failureCallback) => {
@@ -49,8 +75,10 @@ const Calendar = (props) => {
             data.result.slots.map((eventEl) => {
                 const start = moment(eventEl['time']);
                 const end = moment(eventEl['time']).add(10, "m");
+                const dayTitle = parseEventDayTitle(eventEl)
+                const weekTitle = parseEventWeekTitle(eventEl['participants']);
                 slots.push({
-                    title: parseEventTitle(eventEl['participants']),
+                    title: CurrTimeInterval === 'week' ? weekTitle : dayTitle,
                     start: start.format("YYYY-MM-DD HH:mm"),
                     end: end.format("YYYY-MM-DD HH:mm"),
                     extendedProps: {
@@ -163,6 +191,10 @@ const Calendar = (props) => {
         });
     }
 
+    const handleEventHTML = (info) => {
+        return {html: info.event.title};
+    }
+
     return (
         <div>
             <Alert show={isAlert} handleOnClose={hideAlert} start={blocked[0]} end={blocked[1]}></Alert>
@@ -192,8 +224,8 @@ const Calendar = (props) => {
                         eventDurationEditable={false} // запрет менять размер события
                         firstDay={1} // начало недели - понедельник
 
-                        slotDuration='00:10:00'
-                        slotLabelInterval={10}
+                        slotDuration={CurrTimeInterval === 'week' ? '00:10:00' : '00:05:00'}
+                        slotLabelInterval={CurrTimeInterval === 'week' ? 10 : 5}
                         slotLabelFormat={{
                             hour: 'numeric',
                             minute: '2-digit',
@@ -219,6 +251,8 @@ const Calendar = (props) => {
                         eventDidMount={handleEventDidMount}
                         eventMouseEnter={props.is_admin ? null : handleMouseEnter}
                         eventMouseLeave={props.is_admin ? null : handleMouseLeave}
+
+                        eventContent={handleEventHTML}
                     />
                 </CalendarStyleWrapper>
             </div>
